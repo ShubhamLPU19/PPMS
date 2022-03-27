@@ -23,7 +23,7 @@
 @section('content')
 <div class="row">
 	<div class="col-md-12">
-	
+
 		<!-- Recent Sales -->
 		<div class="card">
 			<div class="card-body">
@@ -69,7 +69,7 @@
 			</div>
 		</div>
 		<!-- /Recent sales -->
-		
+
 	</div>
 </div>
 <!-- Delete Modal -->
@@ -92,7 +92,7 @@
 						<div class="col-12">
 							<div class="form-group">
 								<label>Product <span class="text-danger">*</span></label>
-								<select class="select2 form-select form-control" name="product"> 
+								<select class="select2 form-select form-control" name="product">
 									@foreach ($products as $product)
 										@if (!empty($product->purchase))
 											@if (!($product->purchase->quantity <= 0))
@@ -138,7 +138,7 @@
 							<input type="hidden" id="edit_id" name="id">
 							<div class="form-group">
 								<label>Product <span class="text-danger">*</span></label>
-								<select class="select2 form-select form-control edit_product" name="product"> 
+								<select class="select2 form-select form-control edit_product" name="product">
 									@foreach ($products as $product)
 										@if (!empty($product->purchase))
 											@if (!($product->purchase->quantity <= 0))
@@ -182,7 +182,7 @@
 				$('#edit_id').val(id);
 				$('.edit_product').val(product);
 				$('.edit_quantity').val(quantity);
-				
+
 			});
 		});
 	</script>

@@ -21,7 +21,7 @@
 @section('content')
 <div class="row">
 	<div class="col-md-12">
-	
+
 		<!-- Suppliers -->
 		<div class="card">
 			<div class="card-body">
@@ -29,7 +29,7 @@
 					<table id="datatable-export" class="table table-hover table-center mb-0">
 						<thead>
 							<tr>
-								<th>Product</th>
+								<!-- <th>Product</th> -->
 								<th>Name</th>
 								<th>Phone</th>
 								<th>Email</th>
@@ -41,9 +41,9 @@
 						<tbody>
 							@foreach ($suppliers as $supplier)
 							<tr>
-								<td>										
+								<!-- <td>
 									{{$supplier->product}}
-								</td>
+								</td> -->
 								<td>{{$supplier->name}}</td>
 								<td>{{$supplier->phone}}</td>
 								<td>{{$supplier->email}}</td>
@@ -60,20 +60,20 @@
 									</div>
 								</td>
 							</tr>
-							@endforeach							
+							@endforeach
 						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
 		<!-- /Suppliers-->
-		
+
 	</div>
 </div>
 <!-- Delete Modal -->
 <x-modals.delete :route="'suppliers'" :title="'Supplier'" />
 <!-- /Delete Modal -->
-@endsection	
+@endsection
 
 @push('page-js')
 	<!-- Select2 js-->

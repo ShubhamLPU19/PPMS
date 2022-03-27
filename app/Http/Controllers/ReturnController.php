@@ -16,21 +16,15 @@ use App\Models\Category;
 use App\Models\Customer;
 use App\Models\ProductBatch;
 use Session;
-use Helpers;
 
-class SalesController extends Controller
+class ReturnController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $title = "sales";
         $orderitems = OrderItem::where('order_id',Session::get('id'))->get();
 
-        return view('sale',compact('title','orderitems'));
+        return view('return.index',compact('title','orderitems'));
     }
 
     public function autocomplete(Request $request)
@@ -46,12 +40,6 @@ class SalesController extends Controller
         return response()->json($response);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request,[
@@ -94,8 +82,7 @@ class SalesController extends Controller
         $orderitem->gst_amount = (($alldata->price * $request->quantity) *  $alldata->gst_percent)/100;
         $orderitem->save();
 
-        // Product::where(["medicine_name"=>$request->medicinename])->update(["quantity"=> $alldata->quantity - $request->quantity]);
-        ProductBatch::where(["batch_name"=>$batch])->decrement("available_quantity", $request->quantity);
+        ProductBatch::where(["batch_name"=>$batch])->increment("available_quantity", $request->quantity);
         $notification = array(
             'message'=>"Product has been added",
             'alert-type'=>'success',
@@ -108,17 +95,17 @@ class SalesController extends Controller
     {
         $order_id = Session::get('id');
         $total_amount = OrderItem::where(['order_id'=>$order_id])->sum('total_amount');
-        return view('checkout',compact('order_id','total_amount'));
+        return view('return.returncheckout',compact('order_id','total_amount'));
     }
 
-    public function checkoutadd(Request $request)
+    public function checkoutaddreturn(Request $request)
     {
         $customer = new Customer();
         $customer->order__id = $request->order_id;
         $customer->name = $request->name;
         $customer->doctor_name = $request->doctor_name;
         $customer->ipd_id = $request->ipd_no;
-        $customer->sale_type = "purchase";
+        $customer->sale_type = "return";
         $customer->payment_type = $request->payment_type;
         $customer->sub_total = $request->sub_total;
         $customer->amount = $request->amount;
@@ -143,16 +130,9 @@ class SalesController extends Controller
         }
         $orderitems = OrderItem::where(['order_id'=>$request->order_id])->get();
         $customer = Customer::where(['order__id'=>$request->order_id])->first();
-        return view('purchaserecipt',compact('orderitems','customer'));
+        return view('return.returnrecipt',compact('orderitems','customer'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request)
     {
         $orderItem = OrderItem::where(['id'=>$request->id])->first();
@@ -172,12 +152,6 @@ class SalesController extends Controller
         return "Product quantity updated.";
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
         $orderitem = OrderItem::find($request->id);
@@ -188,10 +162,17 @@ class SalesController extends Controller
         return "Product Removed From Cart.";
     }
 
-    public function salesrecipt(Request $request,$order_id)
+    public function returnreport()
+    {
+        $returnreports = Customer::whereDate('created_at', Carbon::today())->where(["sale_type"=>"return"])->orderBy("id","desc")->get();
+        return view("return.returnreport",compact('returnreports'));
+    }
+
+    public function returnrecipt(Request $request,$order_id)
     {
         $orderitems = OrderItem::where(['order_id'=>$order_id])->get();
         $customer = Customer::where(['order__id'=>$order_id])->first();
-        return view('purchaserecipt',compact('orderitems','customer'));
+        return view('return.returnrecipt',compact('orderitems','customer'));
     }
+
 }

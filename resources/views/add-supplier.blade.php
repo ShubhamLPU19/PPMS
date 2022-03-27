@@ -22,12 +22,12 @@
 	<div class="col-sm-12">
 		<div class="card">
 			<div class="card-body custom-edit-service">
-				
-		
+
+
 			<!-- Add Medicine -->
 			<form method="post" enctype="multipart/form-data" action="{{route('add-supplier')}}">
 				@csrf
-				
+
 				<div class="service-fields mb-3">
 					<div class="row">
 						<div class="col-lg-6">
@@ -60,18 +60,18 @@
 
 				<div class="service-fields mb-3">
 					<div class="row">
-						<div class="col-lg-6">
+						<div class="col-lg-12">
 							<div class="form-group">
 								<label>Address <span class="text-danger">*</span></label>
 								<input type="text" name="address" class="form-control">
 							</div>
 						</div>
-						<div class="col-lg-6">
+						<!-- <div class="col-lg-6">
 							<label>Product</label>
 							<input type="text" name="product" class="form-control">
-						</div>
+						</div> -->
 					</div>
-				</div>			
+				</div>
 				<div class="service-fields mb-3">
 					<div class="row">
 						<div class="col-12">
@@ -80,7 +80,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="submit-section">
 					<button class="btn btn-primary submit-btn" type="submit" name="form_submit" value="submit">Submit</button>
 				</div>
@@ -90,15 +90,15 @@
 
 			</div>
 		</div>
-	</div>			
+	</div>
 </div>
-@endsection	
+@endsection
 
 @push('page-js')
 	<!-- Select2 JS -->
 	<script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 	<!-- Datetimepicker JS -->
 	<script src="{{asset('assets/js/moment.min.js')}}"></script>
-	<script src="{{asset('assets/js/bootstrap-datetimepicker.min.js')}}"></script>	
+	<script src="{{asset('assets/js/bootstrap-datetimepicker.min.js')}}"></script>
 @endpush
 

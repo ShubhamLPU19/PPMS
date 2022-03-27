@@ -2,21 +2,21 @@
 <div class="sidebar" id="sidebar">
 	<div class="sidebar-inner slimscroll">
 		<div id="sidebar-menu" class="sidebar-menu">
-			
+
 			<ul>
-				<li class="menu-title"> 
+				<li class="menu-title">
 					<span>Main</span>
 				</li>
-				<li class="{{ Request::routeIs('dashboard') ? 'active' : '' }}"> 
+				<li class="{{ Request::routeIs('dashboard') ? 'active' : '' }}">
 					<a href="{{route('dashboard')}}"><i class="fe fe-home"></i> <span>Dashboard</span></a>
 				</li>
-				
+
 				@can('view-category')
-				<li class="{{ Request::routeIs('categories') ? 'active' : '' }}"> 
+				<li class="{{ Request::routeIs('categories') ? 'active' : '' }}">
 					<a href="{{route('categories')}}"><i class="fe fe-layout"></i> <span>Categories</span></a>
 				</li>
 				@endcan
-				
+
 				@can('view-products')
 				<li class="submenu">
 					<a href="#"><i class="fe fe-document"></i> <span> Products</span> <span class="menu-arrow"></span></a>
@@ -28,7 +28,7 @@
 					</ul>
 				</li>
 				@endcan
-				
+
 				@can('view-purchase')
 				<li class="submenu">
 					<a href="#"><i class="fe fe-star-o"></i> <span> Purchase</span> <span class="menu-arrow"></span></a>
@@ -43,7 +43,9 @@
 				@can('view-sales')
 				<li><a class="{{ Request::routeIs('sales') ? 'active' : '' }}" href="{{route('sales')}}"><i class="fe fe-activity"></i> <span>Sales</span></a></li>
 				@endcan
-				@can('view-supplier')
+                <li><a class="{{ Request::routeIs('return') ? 'active' : '' }}" href="{{route('return')}}"><i class="fa fa-undo" aria-hidden="true"></i><span>Return</span></a></li>
+				<li><a class="{{ Request::routeIs('sales') ? 'active' : '' }}" href="{{route('sales')}}"><i class="fab fa-firstdraft"></i><span>Draft</span></a></li>
+                @can('view-supplier')
 				<li class="submenu">
 					<a href="#"><i class="fe fe-user"></i> <span> Supplier</span> <span class="menu-arrow"></span></a>
 					<ul style="display: none;">
@@ -57,9 +59,14 @@
 				<li class="submenu">
 					<a href="#"><i class="fe fe-document"></i> <span> Reports</span> <span class="menu-arrow"></span></a>
 					<ul style="display: none;">
-						<li><a class="{{ Request::routeIs('reports') ? 'active' : '' }}" href="{{route('reports')}}">Reports</a></li>
+						<li><a class="{{ Request::routeIs('reports') ? 'active' : '' }}" href="{{route('reports')}}">Sale Reports</a></li>
+                        <li><a class="{{ Request::routeIs('ipdreport') ? 'active' : '' }}" href="{{route('ipdreport')}}"><i class="fab fa-firstdraft"></i>  <span>IPD Report</span></a></li>
+                        <li><a class="{{ Request::routeIs('returnreport') ? 'active' : '' }}" href="{{route('returnreport')}}"><i class="fa fa-undo"></i>   <span>Return Report</span></a></li>
 					</ul>
-				</li>
+                    <ul style="display: none;">
+
+                    </ul>
+                </li>
 				@endcan
 
 				@can('view-access-control')
@@ -73,20 +80,20 @@
 						<li><a class="{{ Request::routeIs('roles') ? 'active' : '' }}" href="{{route('roles')}}">Roles</a></li>
 						@endcan
 					</ul>
-				</li>					
+				</li>
 				@endcan
 
 				@can('view-users')
-				<li class="{{ Request::routeIs('users') ? 'active' : '' }}"> 
+				<li class="{{ Request::routeIs('users') ? 'active' : '' }}">
 					<a href="{{route('users')}}"><i class="fe fe-users"></i> <span>Users</span></a>
 				</li>
 				@endcan
-				
-				<li class="{{ Request::routeIs('profile') ? 'active' : '' }}"> 
+
+				<li class="{{ Request::routeIs('profile') ? 'active' : '' }}">
 					<a href="{{route('profile')}}"><i class="fe fe-user-plus"></i> <span>Profile</span></a>
 				</li>
 				@can('view-settings')
-				<li class="{{ Request::routeIs('settings') ? 'active' : '' }}"> 
+				<li class="{{ Request::routeIs('settings') ? 'active' : '' }}">
 					<a href="{{route('settings')}}">
 						<i class="fa fa-gears"></i>
 						 <span> Settings</span>

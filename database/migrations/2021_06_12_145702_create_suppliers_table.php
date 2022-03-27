@@ -17,10 +17,10 @@ class CreateSuppliersTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('email')->unique();
-            $table->string('phone')->nullable();
-            $table->string('company');
+            $table->string('phone')->unique()->nullable();
+            $table->string('company')->unique();
             $table->string('address');
-            $table->string('product');
+            // $table->string('product');
             $table->text('description')->nullable();
             $table->softDeletes();
             $table->timestamps();

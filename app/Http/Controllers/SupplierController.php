@@ -44,7 +44,7 @@ class SupplierController extends Controller
     {
         $this->validate($request,[
             'name'=>'required',
-            'product'=>'required',
+            // 'product'=>'required',
             'email'=>'email|string',
             'phone'=>'max:13',
             'company'=>'max:200|required',
@@ -57,7 +57,7 @@ class SupplierController extends Controller
             'phone'=>$request->phone,
             'company'=>$request->company,
             'address'=>$request->address,
-            'product'=>$request->product,
+            // 'product'=>$request->product,
             'description'=>$request->description,
         ]);
         $notification = array(

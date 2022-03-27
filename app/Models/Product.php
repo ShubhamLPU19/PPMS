@@ -11,14 +11,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-    use HasFactory,SoftDeletes,Notifiable;
+    use HasFactory,Notifiable;
 
+    protected $table = 'product_masters';
     protected $fillable = [
-        'purchase_id','price',
-        'discount','description',
+        'supplier_id','category_id',
+        'medicine_name','brand_name','batch','quantity','expire_date','company_name','price','gst','location','status',
     ];
 
-   
+
 
     public function purchase(){
         return $this->belongsTo(Purchase::class);

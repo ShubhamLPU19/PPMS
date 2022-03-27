@@ -6,16 +6,15 @@ use Carbon\Carbon;
 use App\Models\Sales;
 use App\Models\Product;
 use App\Models\Purchase;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
     public function index(){
-        $title = "generate Reports";
-        return view('reports',compact(
-            'title',
-        ));
+        $reports = Customer::whereDate('created_at', Carbon::today())->orderBy("id","desc")->get();
+        return view("purchase_report",compact('reports'));
     }
 
     public function getData(Request $request){

@@ -21,28 +21,116 @@
 	<div class="col-sm-12">
 		<div class="card">
 			<div class="card-body custom-edit-service">
-				
-		
+
+
 			<!-- Add Medicine -->
 			<form method="post" enctype="multipart/form-data" id="update_service" action="{{route('add-product')}}">
 				@csrf
 				<div class="service-fields mb-3">
 					<div class="row">
-						
-						<div class="col-lg-12">
+						<div class="col-lg-6">
 							<div class="form-group">
-								<label>Product <span class="text-danger">*</span></label>
-								<select class="select2 form-select form-control" name="product"> 
-									@foreach ($products as $product)
-										<option value="{{$product->id}}">{{$product->name}}</option>
+								<label>Category <span class="text-danger">*</span></label>
+								<select class="select2 form-select form-control" name="category_id" required>
+                                    <option value="">Select Category</option>
+									@foreach ($categories as $category)
+										<option value="{{$category->id}}">{{$category->name}}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+
+                        <div class="col-lg-6">
+							<div class="form-group">
+								<label>Supplier <span class="text-danger">*</span></label>
+								<select class="select2 form-select form-control" name="supplier_id" required>
+                                    <option value="">Select Supplier</option>
+									@foreach ($suppliers as $supplier)
+										<option value="{{$supplier->id}}">{{$supplier->name}}</option>
 									@endforeach
 								</select>
 							</div>
 						</div>
 					</div>
 				</div>
-				
-				<div class="service-fields mb-3">
+
+                <div class="service-fields mb-3">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Medicine<span class="text-danger">*</span></label>
+								<input class="form-control" type="text" name="medicine_name" value="" required>
+							</div>
+						</div>
+
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Brand<span class="text-danger"></span></label>
+								<input class="form-control" type="text" name="brand_name" value="">
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+                <!-- <div class="service-fields mb-3">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Quantity<span class="text-danger">*</span></label>
+								<input class="form-control" type="text" name="quantity" value="" required>
+							</div>
+						</div>
+
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Expire Date<span class="text-danger">*</span></label>
+								<input class="form-control" type="date" name="expire_date" value="" required>
+							</div>
+						</div>
+
+					</div>
+				</div> -->
+
+                <div class="service-fields mb-3">
+					<div class="row">
+						<!-- <div class="col-lg-6">
+							<div class="form-group">
+								<label>Company Name<span class="text-danger">*</span></label>
+								<input class="form-control" type="text" name="company_name" value="" required>
+							</div>
+						</div> -->
+
+						<!-- <div class="col-lg-6">
+							<div class="form-group">
+								<label>Price<span class="text-danger">*</span></label>
+								<input class="form-control" type="text" name="price" value="" required>
+							</div>
+						</div> -->
+                        <!-- <input class="form-control" type="hidden" name="status" value="Open"> -->
+					</div>
+				</div>
+
+                <div class="service-fields mb-3">
+					<div class="row">
+						<!-- <div class="col-lg-6">
+							<div class="form-group">
+								<label>GST<span class="text-danger">*</span></label>
+								<input class="form-control" type="text" name="gst" value="" required>
+							</div>
+						</div>
+
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Location<span class="text-danger">*</span></label>
+								<input class="form-control" type="text" name="location" value="" required>
+							</div>
+						</div> -->
+
+					</div>
+				</div>
+
+				<!-- <div class="service-fields mb-3">
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
@@ -57,12 +145,12 @@
 								<input class="form-control" type="text" name="discount" value="0">
 							</div>
 						</div>
-						
+
 					</div>
 				</div>
 
-								
-				
+
+
 				<div class="service-fields mb-3">
 					<div class="row">
 						<div class="col-lg-12">
@@ -71,11 +159,11 @@
 								<textarea class="form-control service-desc" name="description"></textarea>
 							</div>
 						</div>
-						
+
 					</div>
-				</div>
-				
-				
+				</div> -->
+
+
 				<div class="submit-section">
 					<button class="btn btn-primary submit-btn" type="submit" name="form_submit" value="submit">Submit</button>
 				</div>
@@ -85,7 +173,7 @@
 
 			</div>
 		</div>
-	</div>			
+	</div>
 </div>
 @endsection
 
