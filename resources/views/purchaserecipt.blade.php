@@ -7,11 +7,11 @@
             <tr>
                 <td colspan="2" align="center" style="font-size: 30px;">
                     <strong>Rampari Ausadhalaya</strong>
-                    <p>GSTIN NO - 10BCLPK9104P1ZE</p>
-                    <p>DL NO - 150308/309</p>
-                    <p>(A Unit of Shree Pradhan Healthcare Pvt Ltd)</p>
-                    <p>N.H-28, Khabra Muzaffarpur, Bihar-843136</p>
-                    <p>Email:shreepradhanhospital@gmail.com | Ph. 9199654999</p>
+                    <h5>GSTIN NO - 10BCLPK9104P1ZE</h5>
+                    <h5>DL NO - 150308/309</h5>
+                    <h5>(A Unit of Shree Pradhan Healthcare Pvt Ltd)</h5>
+                    <h5>N.H-28, Khabra Muzaffarpur, Bihar-843136</h5>
+                    <h5>Email:shreepradhanhospital@gmail.com | Ph. 9199654999</h5>
                 </td>
             </tr>
             <tr>

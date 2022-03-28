@@ -32,6 +32,10 @@ class ReturnController extends Controller
         $result = Product::select('product_masters.medicine_name','product_masters.id','product_batch.available_quantity','product_batch.expiry_date','product_batch.batch_name')
         ->leftjoin('product_batch','product_masters.id','=','product_batch.product_id')
         ->where('product_masters.medicine_name', 'like', "{$request->term}%")
+        ->whereNotNull('product_batch.batch_name')
+        ->where('product_batch.available_quantity','>',0)
+        ->orderBy('product_batch.available_quantity','asc')
+        ->orderBy('product_batch.expiry_date','asc')
         ->get();
         $response = array();
         foreach($result as $res){
