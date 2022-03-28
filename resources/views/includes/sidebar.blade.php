@@ -44,7 +44,7 @@
 				<li><a class="{{ Request::routeIs('sales') ? 'active' : '' }}" href="{{route('sales')}}"><i class="fe fe-activity"></i> <span>Sales</span></a></li>
 				@endcan
                 <li><a class="{{ Request::routeIs('return') ? 'active' : '' }}" href="{{route('return')}}"><i class="fa fa-undo" aria-hidden="true"></i><span>Return</span></a></li>
-				<li><a class="{{ Request::routeIs('sales') ? 'active' : '' }}" href="{{route('sales')}}"><i class="fab fa-firstdraft"></i><span>Draft</span></a></li>
+				<li><a class="{{ Request::routeIs('drafts') ? 'active' : '' }}" href="{{route('drafts')}}"><i class="fab fa-firstdraft"></i><span>Draft</span></a></li>
                 @can('view-supplier')
 				<li class="submenu">
 					<a href="#"><i class="fe fe-user"></i> <span> Supplier</span> <span class="menu-arrow"></span></a>

@@ -106,14 +106,19 @@
         <div class="col-lg-6 draftbox" style="display:none;">
             <div class="form-group">
                 <label>Bill To<span class="text-danger">*</span></label>
-                <input class="form-control" type="text" name="name" value="">
+                <input class="form-control" type="text"  id="billTo" name="name" value="">
             </div>
         </div>
     </div>
 </div>
 <div class="card">
     <div class="card-header text-center font-weight-bold">
-    <a href="{{route('checkout')}}" class="btn btn-success text-center draftBtn">Submit and continue</a>
+    <a href="{{route('checkout')}}" class="btn btn-success text-center submitBtn">Submit and continue</a>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header text-center font-weight-bold">
+    <a href="javascript:void(0)" class="btn btn-success text-center draftBtn">Move to draft</a>
     </div>
 </div>
 @endsection
@@ -218,7 +223,7 @@ $('.update').click(function(e){
             $('#res_message').html(response);
             $('#msg_div').removeClass('d-none');
             setTimeout(function(){
-            // location.reload();
+            location.reload();
             }, 1000);
             setTimeout(function(){
             $('#res_message').hide();
@@ -260,13 +265,42 @@ $('.delete').click(function(e){
 
 function valueChanged()
 {
-    if($('.draftcheck').is(":checked"))
+    if($('.draftcheck').is(":checked")){
         $(".draftbox").show();
-        // $(".draftBtn").text("Save and move to draft");
-    else
+        $(".draftBtn").show();
+        $(".submitBtn").hide();
+    }else{
         $(".draftbox").hide();
-        // $(".draftBtn").text("Save and continue");
+        $(".draftBtn").hide();
+        $(".submitBtn").show();
+    }
 }
+
+$('.draftBtn').click(function(e){
+    var name = $("#billTo").val();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+   $.ajax({
+      url: "{{route('draft')}}",
+      type: 'POST',
+      data: {name:name},
+      success: function(response){
+            $('#res_message').show();
+            $('#res_message').html(response);
+            $('#msg_div').removeClass('d-none');
+            setTimeout(function(){
+            location.reload();
+            }, 1000);
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },1000);
+        }
+    });
+});
 
 </script>
 @endpush

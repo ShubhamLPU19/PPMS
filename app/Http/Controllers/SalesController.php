@@ -115,6 +115,20 @@ class SalesController extends Controller
         return view('checkout',compact('order_id','total_amount'));
     }
 
+    public function draft(Request $request)
+    {
+        $order_id = Session::get('id');
+        $order = Order::where(['id'=>$order_id])->update([
+            "name" => $request->name,
+            "status" => "draft"
+        ]);
+        if($order)
+        {
+            Session::forget('id');
+        }
+        return "Cart Items moved to draft.";
+    }
+
     public function checkoutadd(Request $request)
     {
         $customer = new Customer();

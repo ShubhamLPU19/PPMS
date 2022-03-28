@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\IPDReportController;
+use App\Http\Controllers\DraftController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +90,7 @@ Route::group(['middleware'=>['auth']],function (){
     Route::put('itemupdate/{id}',[SalesController::class,'update'])->name('updateqty');
     Route::delete('itemdelete/{id}',[SalesController::class,'destroy'])->name('deleteitem');
     Route::get('salesrecipt/{id}',[SalesController::class,'salesrecipt'])->name('salesrecipt');
+    Route::post('draft',[SalesController::class,'draft'])->name('draft');
 
     /* End of sale */
 
@@ -106,6 +108,9 @@ Route::group(['middleware'=>['auth']],function (){
 
     Route::get('ipdreport',[IPDReportController::class,'index'])->name('ipdreport');
     Route::get('viewipd/{ipd_id}', [IPDReportController::class,'viewipd'])->name('viewipd');
+
+    Route::get('drafts',[DraftController::class,'index'])->name('drafts');
+    Route::post('movetocart',[DraftController::class,'movetocart'])->name('movetocart');
 
     /* End of return */
     Route::get('permissions',[PermissionController::class,'index'])->name('permissions');
