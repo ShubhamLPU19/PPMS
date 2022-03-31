@@ -46,6 +46,7 @@ function getIndianCurrency(float $number)
             $str1 [] = ($number < 21) ? $words[$number].' '. $digits[$counter]. $plural.' '.$hundred:$words[floor($number / 10) * 10].' '.$words[$number % 10]. ' '.$digits[$counter].$plural.' '.$hundred;
         } else $str1[] = null;
     }
+
     $paise = implode('', array_reverse($str1));
     //$paise = ($decimal > 0) ? " and " . ($words[(int)($decimal/10)*10] . " " . $words[$decimal % 10]) . ' Paise' : '';
     $paiseText = ($decimalVal > 0) ? " and " . $paise . ' Paise' : '';
