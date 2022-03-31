@@ -81,7 +81,7 @@
                 </td>
 
                 <td style="border-top:1px solid;"><strong>Total Amount :</strong></td>
-                <td style="border-top:1px solid;"><strong>{{$totalamt}}</strong></td>
+                <td style="border-top:1px solid;"><strong>{{getIndianCurrency($totalamt)}}</strong></td>
             </tr>
             <?php $discountamt = 0;?>
             @if($customer->discount_amount > 0)
@@ -126,7 +126,7 @@
                 </td>
 
                 <td style="border-top:1px solid;"><strong>Change Amount :</strong></td>
-                <td style="border-top:1px solid;"><strong>{{$customer->paid_amount - $customer->amount }}</strong></td>
+                <td style="border-top:1px solid;"><strong>{{round($customer->paid_amount - $customer->amount) }}</strong></td>
             </tr>
             @endif
 

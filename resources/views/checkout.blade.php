@@ -56,7 +56,7 @@
 						<div class="col-lg-6">
 							<div class="form-group">
 								<label>Sub Total<span class="text-danger">*</span></label>
-								<input class="form-control" type="number" id="subtotal" name="sub_total" value="{{$total_amount}}" required readonly>
+								<input class="form-control" type="number" id="subtotal" name="sub_total" value="{{round($total_amount)}}" required readonly>
 							</div>
 						</div>
 
@@ -74,7 +74,7 @@
                         <div class="col-lg-6">
 							<div class="form-group">
 								<label>Amount<span class="text-danger">*</span></label>
-								<input class="form-control" type="number" id="amount" name="amount" value="{{$total_amount}}" required readonly>
+								<input class="form-control" type="number" id="amount" name="amount" value="{{round($total_amount)}}" required readonly>
 							</div>
 						</div>
 

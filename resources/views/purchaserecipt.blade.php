@@ -1,4 +1,19 @@
 
+@push('page-css')
+<!-- Select2 css-->
+<link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
+<style type="text/css" media="print">
+   @media print {
+     @page {
+        margin-left: 0.5in;
+        margin-right: 0.5in;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+}
+</style>
+@endpush
+
 
 <a href="{{route('addorder')}}" class="btn btn-success text-center backBtn">Back</a></br>
 
@@ -66,8 +81,8 @@
             <?php $totalamt += $orderitem->total_amount; ?>
             <tr>
                 <td>{{$count++}}</td>
-                <td style="text-align: left;">{{$orderitem->medicine_category}}</td>
-                <td style="text-align: left;">{{$orderitem->medicine_name}}</td>
+                <td>{{$orderitem->medicine_category}}</td>
+                <td>{{$orderitem->medicine_name}}</td>
                 <td>{{$orderitem->price}}</td>
                 <td>{{$orderitem->quantity}}</td>
             </tr>
@@ -81,7 +96,7 @@
                 </td>
 
                 <td style="border-top:1px solid;"><strong>Total Amount :</strong></td>
-                <td style="border-top:1px solid;"><strong>{{$totalamt}}</strong></td>
+                <td style="border-top:1px solid;"><strong>{{getIndianCurrency($totalamt)}}</strong></td>
             </tr>
             <?php $discountamt = 0;?>
             @if($customer->discount_amount > 0)
@@ -102,9 +117,9 @@
                     <div style="padding-top: 10px;"></div>
 {{--                    <div style="max-width: 80%; padding-top: 10px;">dslajf ldsajf; jasl;f jlksa jfdjdsaf lkjdsa f;lkdsajf ;jdsaf ;lks jfda;sjaf;l dsaf</div>--}}
                 </td>
-
+                <?php $returnamt = 0; $returnamt = $customer->paid_amount - $customer->amount; ?>
                 <td style="border-top:1px solid;"><strong>Total Amount :</strong></td>
-                <td style="border-top:1px solid;"><strong>{{$totalamt - $customer->discount_amount}}</strong></td>
+                <td style="border-top:1px solid;"><strong>{{getIndianCurrency($totalamt - $customer->discount_amount)}}</strong></td>
             </tr>
             @endif
             <tr>
@@ -126,7 +141,7 @@
                 </td>
 
                 <td style="border-top:1px solid;"><strong>Change Amount :</strong></td>
-                <td style="border-top:1px solid;"><strong>{{$customer->paid_amount - $customer->amount }}</strong></td>
+                <td style="border-top:1px solid;"><strong>{{round($customer->paid_amount - $customer->amount)}}</strong></td>
             </tr>
             @endif
 
@@ -146,4 +161,3 @@
             <button onclick="window.print()" class="btn no-print btn-lg btn-info">Print <i class="fas fa-print"></i></button>
         </div>
     </div>
-
