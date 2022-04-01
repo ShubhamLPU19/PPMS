@@ -22,7 +22,8 @@
 			<div class="row align-items-center">
 				<div class="col-auto profile-image">
 					<a href="#">
-						<img class="rounded-circle" alt="User Image" src="@if(!empty(auth()->user()->avatar)){{asset('storage/users/'.auth()->user()->avatar)}}@endif">
+						<!-- <img class="rounded-circle" alt="User Image" src="@if(!empty(auth()->user()->avatar)){{asset('storage/users/'.auth()->user()->avatar)}}@endif"> -->
+                        <img class="rounded-circle" src="https://www.pngfind.com/pngs/m/470-4703547_icon-user-icon-hd-png-download.png" />
 					</a>
 				</div>
 				<div class="col ml-md-n2 profile-user-info">
