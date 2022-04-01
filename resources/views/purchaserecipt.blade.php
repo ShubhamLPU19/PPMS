@@ -137,7 +137,7 @@ function getIndianCurrency(float $number)
                 <td>{{$count++}}</td>
                 <td>{{$orderitem->medicine_category}}</td>
                 <td>{{$orderitem->medicine_name}}</td>
-                <td>{{$orderitem->price}}</td>
+                <td>{{round($orderitem->price)}}</td>
                 <td>{{$orderitem->quantity}}</td>
             </tr>
             @endforeach

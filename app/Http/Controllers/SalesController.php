@@ -176,15 +176,20 @@ class SalesController extends Controller
         $orderItem = OrderItem::where(['id'=>$request->id])->first();
         $product = ProductBatch::where(['batch_name'=>$request->batch])->first();
         $countval = 0;
+        $totalAmt = 0.0;
         if($orderItem->quantity > $request->qty)
         {
-            $countval = $orderItem->quantity - $request->qty;
-            OrderItem::where(['id'=>$request->id])->update(['quantity'=>$countval]);
+            // $countval = $orderItem->quantity - $request->qty;
+            $countval = $request->qty;
+            $totalAmt = $request->qty * $product->price;
+            OrderItem::where(['id'=>$request->id])->update(['quantity'=>$countval,'total_amount'=>$totalAmt]);
             ProductBatch::where(["batch_name"=>$request->batch])->update(['available_quantity'=>$product->available_quantity + $countval]);
         }elseif($orderItem->quantity < $request->qty)
         {
-            $countval = $request->qty - $orderItem->quantity;
-            OrderItem::where(['id'=>$request->id])->update(['quantity'=>$request->qty ]);
+            // $countval = $request->qty - $orderItem->quantity;
+            $countval = $request->qty;
+            $totalAmt = $request->qty * $product->price;
+            OrderItem::where(['id'=>$request->id])->update(['quantity'=>$request->qty, 'total_amount'=>$totalAmt]);
             ProductBatch::where(["batch_name"=>$request->batch])->update(['available_quantity'=>$product->available_quantity - $countval]);
         }
         return "Product quantity updated.";

@@ -139,7 +139,8 @@
             var subtotal = $('#subtotal').val();
             var discountpercent = $('#discountpercent').val();
             var amount = (discountpercent/100)*subtotal;
-            $('#amount').val(subtotal - amount);
+            var updatedAmt = Math.round(subtotal - amount);
+            $('#amount').val(updatedAmt);
         });
     </script>
 @endpush

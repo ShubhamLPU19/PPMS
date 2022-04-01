@@ -170,8 +170,6 @@
 
 $(document).ready(function(){
 $('#send_form').click(function(e){
-    // e.preventDefault();
-    /*Ajax Request Header setup*/
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -186,7 +184,6 @@ $('#send_form').click(function(e){
       method: 'post',
       data: $('#contact_us').serialize(),
       success: function(response){
-         console.log(response);
             $('#send_form').html('Submit');
             $('#res_message').show();
             $('#res_message').html(response);
@@ -204,7 +201,6 @@ $('#send_form').click(function(e){
    });
 });
 $('.update').click(function(e){
-    alert("Testing");
     var qty = $("#qty").val();
     var id = $(this).attr("data-id");
     var mname = $("#mname").text();
