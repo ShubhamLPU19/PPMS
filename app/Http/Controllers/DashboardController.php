@@ -11,17 +11,20 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Notifications\StockAlert;
 use App\Events\ProductReachedLowStock;
+use App\Models\ProductBatch;
+use App\Models\Customer;
+use App\Models\Order;
 
 class DashboardController extends Controller
 {
-    public function index(){   
+    public function index(){
         $title = "dashboard";
-        
+
         $total_purchases = Purchase::where('expiry_date','=',Carbon::now())->count();
         $total_categories = Category::count();
         $total_suppliers = Supplier::count();
         $total_sales = Sales::count();
-        
+
         $pieChart = app()->chartjs
                 ->name('pieChart')
                 ->type('pie')
@@ -35,15 +38,20 @@ class DashboardController extends Controller
                     ]
                 ])
                 ->options([]);
-        
-                
-        
-        $total_expired_products = Purchase::whereDate('expiry_date', '=', Carbon::now())->count();
+
+
+        $expireTreshold = Carbon::now()->addDays(60);
+        $total_expired_products = ProductBatch::where('expiry_date', '<=', $expireTreshold)->count();
+        $outofStockSoon = ProductBatch::where('available_quantity','<=',10)->count();
+        $outofStock = ProductBatch::where('available_quantity','<=',0)->count();
+        $sales = Customer::where(['sale_type'=>'purchase'])->whereDate('created_at','=',Carbon::now())->sum('amount');
+        $return = Customer::where(['sale_type'=>'return'])->whereDate('created_at','=',Carbon::now())->sum('amount');
         $latest_sales = Sales::whereDate('created_at','=',Carbon::now())->get();
         $today_sales = Sales::whereDate('created_at','=',Carbon::now())->sum('total_price');
+        $draft = Order::where(['status'=>'draft'])->whereDate('updated_at','=',Carbon::now())->count();
         return view('dashboard',compact(
             'title','pieChart','total_expired_products',
-            'latest_sales','today_sales','total_categories'
+            'latest_sales','today_sales','total_categories','outofStock','outofStockSoon','sales','return','draft'
         ));
     }
 }
