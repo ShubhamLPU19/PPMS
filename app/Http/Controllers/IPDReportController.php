@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class IPDReportController extends Controller
 {
     public function index(){
-        $reports = Customer::whereDate('created_at', Carbon::today())->orderBy("id","desc")->get();
+        $reports = Customer::whereDate('created_at', Carbon::today())->whereNotNull('ipd_id')->orderBy("id","desc")->get();
         return view("ipd_report.index",compact('reports'));
     }
 
@@ -17,6 +17,6 @@ class IPDReportController extends Controller
     {
         $ipdreportspurchase = Customer::where(["ipd_id"=>$request->ipd_id,"sale_type"=>"purchase"])->orderBy("id","desc")->get();
         $ipdreportsreturn = Customer::where(["ipd_id"=>$request->ipd_id,"sale_type"=>"return"])->orderBy("id","desc")->get();
-        return view("ipd_report.viewipdreport",compact('ipdreports'));
+        return view("ipd_report.viewipdreport",compact('ipdreportspurchase','ipdreportsreturn'));
     }
 }

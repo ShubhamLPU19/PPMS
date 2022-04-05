@@ -29,7 +29,11 @@
 				</li>
 				@endcan
 
-				@can('view-purchase')
+                <li class="{{ Request::routeIs('productbatch') ? 'active' : '' }}">
+					<a href="{{route('productbatch')}}"><i class="fe fe-document"></i> <span>Product Batch</span></a>
+				</li>
+
+				<!-- @can('view-purchase')
 				<li class="submenu">
 					<a href="#"><i class="fe fe-star-o"></i> <span> Purchase</span> <span class="menu-arrow"></span></a>
 					<ul style="display: none;">
@@ -39,7 +43,7 @@
 						@endcan
 					</ul>
 				</li>
-				@endcan
+				@endcan -->
 				@can('view-sales')
 				<li><a class="{{ Request::routeIs('sales') ? 'active' : '' }}" href="{{route('sales')}}"><i class="fe fe-activity"></i> <span>Sales</span></a></li>
 				@endcan
@@ -69,7 +73,7 @@
                 </li>
 				@endcan
 
-				@can('view-access-control')
+				<!-- @can('view-access-control')
 				<li class="submenu">
 					<a href="#"><i class="fe fe-lock"></i> <span> Access Control</span> <span class="menu-arrow"></span></a>
 					<ul style="display: none;">
@@ -81,25 +85,25 @@
 						@endcan
 					</ul>
 				</li>
-				@endcan
+				@endcan -->
 
-				@can('view-users')
+				<!-- @can('view-users')
 				<li class="{{ Request::routeIs('users') ? 'active' : '' }}">
 					<a href="{{route('users')}}"><i class="fe fe-users"></i> <span>Users</span></a>
 				</li>
-				@endcan
+				@endcan -->
 
 				<li class="{{ Request::routeIs('profile') ? 'active' : '' }}">
 					<a href="{{route('profile')}}"><i class="fe fe-user-plus"></i> <span>Profile</span></a>
 				</li>
-				@can('view-settings')
+				<!-- @can('view-settings')
 				<li class="{{ Request::routeIs('settings') ? 'active' : '' }}">
 					<a href="{{route('settings')}}">
 						<i class="fa fa-gears"></i>
 						 <span> Settings</span>
 					</a>
 				</li>
-				@endcan
+				@endcan -->
 			</ul>
 		</div>
 	</div>

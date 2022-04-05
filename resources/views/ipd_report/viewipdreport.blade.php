@@ -32,7 +32,7 @@
   </thead>
   <tbody>
       <?php $purchase_amt = 0; ?>
-      @foreach($ipdreports as $report)
+      @foreach($ipdreportspurchase as $report)
     <tr>
       <th scope="row">{{$report->order__id}}</th>
       <td>{{$report->name}}</td>
@@ -66,7 +66,7 @@
   </thead>
   <tbody>
   <?php $return_amt = 0; ?>
-      @foreach($ipdreports as $report)
+      @foreach($ipdreportsreturn as $report)
     <tr>
       <th scope="row">{{$report->order__id}}</th>
       <td>{{$report->name}}</td>

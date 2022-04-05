@@ -10,7 +10,12 @@
         margin-top: 0;
         margin-bottom: 0;
       }
-}
+    }
+    @media print {
+    .printBtn {
+        display: none;
+    }
+    }
 </style>
 @endpush
 
@@ -76,11 +81,11 @@ function getIndianCurrency(float $number)
             <tr>
                 <td colspan="2" align="center" style="font-size: 30px;">
                     <strong>Rampari Ausadhalaya</strong>
-                    <h5>GSTIN NO - 10BCLPK9104P1ZE</h5>
-                    <h5>DL NO - 150308/309</h5>
-                    <h5>(A Unit of Shree Pradhan Healthcare Pvt Ltd)</h5>
-                    <h5>N.H-28, Khabra Muzaffarpur, Bihar-843136</h5>
-                    <h5>Email:shreepradhanhospital@gmail.com | Ph. 9199654999</h5>
+                    <h5 style="font-size: 15px;margin-top: 2px;">GSTIN NO - 10BCLPK9104P1ZE</h5>
+                    <h5 style="font-size: 15px;margin-top: 2px;">DL NO - 150308/309</h5>
+                    <h5 style="font-size: 15px;margin-top: 2px;">(A Unit of Shree Pradhan Healthcare Pvt Ltd)</h5>
+                    <h5 style="font-size: 15px;margin-top: 2px;">N.H-28, Khabra Muzaffarpur, Bihar-843136</h5>
+                    <h5 style="font-size: 15px;margin-top: 2px;">Email:shreepradhanhospital@gmail.com | Ph. 9199654999</h5>
                 </td>
             </tr>
             <tr>
@@ -212,6 +217,16 @@ function getIndianCurrency(float $number)
             </tr>
         </table>
         <div>
-            <button onclick="window.print()" class="btn no-print btn-lg btn-info">Print <i class="fas fa-print"></i></button>
+            <button onclick="window.print()" class="btn no-print btn-lg btn-info printBtn">Print <i class="fas fa-print"></i></button>
         </div>
     </div>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        // $('.printBtn').click(function(){
+        //     $(".printBtn").show().delay(5000).fadeOut();
+        // });
+    </script>

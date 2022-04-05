@@ -21,6 +21,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\IPDReportController;
 use App\Http\Controllers\DraftController;
+use App\Http\Controllers\ProductBatchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,8 +65,13 @@ Route::group(['middleware'=>['auth']],function (){
     Route::post('products/{product}',[ProductController::class,'update']);
     Route::delete('products',[ProductController::class,'destroy']);
     Route::post('addBatch/{product}',[ProductController::class,'addBatch'])->name('addBatch');
-    Route::get('editbatch/{product}',[ProductController::class,'batchEdit'])->name('editBatch');
-    Route::post('updatebatch/{product}',[ProductController::class,'batchupdate'])->name('batchupdate');
+    // Route::get('editbatch/{product}',[ProductController::class,'batchEdit'])->name('editBatch');
+    // Route::post('updatebatch/{product}',[ProductController::class,'batchupdate'])->name('batchupdate');
+
+    Route::get('productbatch',[ProductBatchController::class,'index'])->name('productbatch');
+    Route::get('editbatch/{id}',[ProductBatchController::class,'batchEdit'])->name('editBatch');
+    Route::post('updatebatch/{id}',[ProductBatchController::class,'batchupdate'])->name('batchupdate');
+    Route::post('status/{id}',[ProductBatchController::class,'statuschange'])->name('status');
 
     Route::get('suppliers',[SupplierController::class,'index'])->name('suppliers');
     Route::get('add-supplier',[SupplierController::class,'create'])->name('add-supplier');

@@ -13,9 +13,9 @@
 		<li class="breadcrumb-item active">Products</li>
 	</ul>
 </div>
-<div class="col-sm-5 col">
+<!-- <div class="col-sm-5 col">
 	<a href="{{route('add-product')}}" class="btn btn-primary float-right mt-2">Add New</a>
-</div>
+</div> -->
 @endpush
 
 @section('content')
@@ -28,37 +28,38 @@
 					<table id="datatable-export" class="table table-hover table-center mb-0">
 						<thead>
 							<tr>
-								<th>Supplier</th>
-								<th>Category</th>
-								<th>Medicine</th>
-								<th>Brand</th>
-								<!--<th>Quantity</th>
-                                <th>Price &#x20B9</th>
-								<th>Expiry Date</th> -->
+								<th>Medicine Name</th>
+								<th>Batch Name</th>
+								<th>Price &#x20B9</th>
+								<th>Expiry Date</th>
+								<th>Location</th>
+                                <th>Quantity</th>
                                 <th>Created At</th>
 								<th class="action-btn">Action</th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach ($products as $product)
+							@foreach ($productbatch as $batch)
 								<tr>
-                                    <td>{{ $product->sup_name }} </td>
-                                    <td>{{$product->cat_name}}</td>
-									<td>{{$product->medicine_name}}</td>
-									<td>{{ $product->brand_name }}</td>
-                                    <!-- <td> {{ $product->quantity }}</td>
-									<td>{{$product->price}}</td> -->
+                                    <td>{{ $batch->medicine_name }} </td>
+                                    <td>{{$batch->batch_name}}</td>
+									<td>{{$batch->price}}</td>
+									<td>{{ $batch->expiry_date }}</td>
+                                    <td> {{ $batch->location }}</td>
+									<td>{{$batch->available_quantity}}</td>
 									<td>
-									{{date_format(date_create($product->expire_date),"d M, Y")}}</span>
+									{{date_format(date_create($batch->created_at),"d M, Y")}}</span>
 									</td>
 									<td>
 										<div class="actions">
-                                            <a class="btn btn-sm bg-success-light" href="{{route('add-batch',$product->id)}}">
-												<i class="fe fe-pencil"></i> Add Batch
+
+                                           <a class="btn btn-sm bg-success-light" href="{{route('editBatch',$batch->id)}}">
+												<i class="fe fe-pencil"></i> Edit Batch
 											</a>
-											<a data-id="{{$product->id}}" href="javascript:void(0);" class="btn btn-sm bg-danger-light deletebtn" data-toggle="modal">
+
+											<!-- <a href="{{route('status',$batch->id)}}" href="javascript:void(0);" class="btn btn-sm bg-danger-light">
 												<i class="fe fe-trash"></i> Delete
-											</a>
+											</a> -->
 										</div>
 									</td>
 								</tr>
@@ -83,3 +84,5 @@
 	<!-- Select2 JS -->
 	<script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 @endpush
+
+
