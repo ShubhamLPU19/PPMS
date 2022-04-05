@@ -12,9 +12,8 @@ class ProductBatchController extends Controller
         $title = "product Batch";
         $productbatch = \DB::table('product_masters')
             ->select('product_masters.medicine_name','product_batch.*')
-            ->leftjoin('product_batch', '.product_masters.id', '=', 'product_batch.product_id')
+            ->leftjoin('product_batch', 'product_masters.id', '=', 'product_batch.product_id')
             ->whereNotNull('product_batch.batch_name')
-            ->where('product_batch.available_quantity','>',0)
             ->orderBy('product_batch.batch_name','asc')
             ->get();
         return view('productbatch.index',compact('title','productbatch'));
