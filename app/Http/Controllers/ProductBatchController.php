@@ -23,7 +23,7 @@ class ProductBatchController extends Controller
     {
         $productbatch = \DB::table('product_masters')
         ->select('product_masters.medicine_name','product_batch.*')
-        ->leftjoin('product_batch', '.product_masters.id', '=', 'product_batch.product_id')
+        ->leftjoin('product_batch', 'product_masters.id', '=', 'product_batch.product_id')
         ->whereNotNull('product_batch.batch_name')
         ->where(['product_batch.id'=>$id])
         ->first();
