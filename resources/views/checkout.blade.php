@@ -37,7 +37,7 @@
 						<div class="col-lg-6">
 							<div class="form-group">
 								<label>IPD No<span class="text-danger"></span></label>
-								<input class="form-control" type="text" name="ipd_no" value="" required>
+								<input class="form-control" type="text" name="ipd_no" value="">
 							</div>
 						</div>
 
