@@ -62,8 +62,9 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('products/{product}',[ProductController::class,'show'])->name('add-batch');
     Route::get('outstock-products',[ProductController::class,'outstock'])->name('outstock');
     Route::post('products/create',[ProductController::class,'store']);
-    Route::post('products/{product}',[ProductController::class,'update']);
+    Route::post('products/{id}',[ProductController::class,'update']);
     Route::delete('products',[ProductController::class,'destroy']);
+    Route::get('editproduct/{id}',[ProductController::class,'editProduct'])->name('editProduct');
     Route::post('addBatch/{product}',[ProductController::class,'addBatch'])->name('addBatch');
     // Route::get('editbatch/{product}',[ProductController::class,'batchEdit'])->name('editBatch');
     // Route::post('updatebatch/{product}',[ProductController::class,'batchupdate'])->name('batchupdate');

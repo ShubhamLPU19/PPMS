@@ -53,6 +53,9 @@
 									</td>
 									<td>
 										<div class="actions">
+                                            <a class="btn btn-sm bg-success-light" href="{{route('editProduct',$product->id)}}">
+												<i class="fe fe-pencil"></i> Update Product
+											</a>
                                             <a class="btn btn-sm bg-success-light" href="{{route('add-batch',$product->id)}}">
 												<i class="fe fe-pencil"></i> Add Batch
 											</a>

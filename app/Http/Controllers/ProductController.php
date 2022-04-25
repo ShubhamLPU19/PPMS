@@ -154,6 +154,14 @@ class ProductController extends Controller
         return view('editbatch',compact('batchData','product'));
     }
 
+    public function editProduct($id)
+    {
+        $product = Product::where(['id'=>$id])->first();
+        $categories = Category::select('id','name')->get();
+        $suppliers = Supplier::select('id','name')->get();
+        return view('edit-product',compact('product','categories','suppliers'));
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -161,21 +169,14 @@ class ProductController extends Controller
      * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Product $product)
+    public function update(Request $request,$id)
     {
+        dd("test");
        $product->update([
             'supplier_id'=>$request->supplier_id,
             'category_id'=>$request->category_id,
             'medicine_name'=>$request->medicine_name,
-            'batch'=>$request->batch,
-            'quantity'=>$request->quantity,
-            'expire_date'=>$request->expire_date,
-            'company_name'=>$request->company_name,
-            'price'=>$request->price,
-            'gst'=>$request->gst,
-            'status'=> "Open",
-            'location'=>$request->location,
-            'created_by'=> Auth::user()->id,
+            'brand_name'=>$request->batch,
         ]);
         $notification=array(
             'message'=>"Product has been updated",

@@ -23,8 +23,10 @@
 
 
 			<!-- Edit Medicine -->
-				<form method="post" enctype="multipart/form-data" id="update_service" action="{{route('edit-product',$product)}}">
-					@csrf
+				<form method="post" enctype="multipart/form-data" id="update_service" action="{{route('products',$product->id)}}">
+                @csrf
+
+                @method('PUT')
                     <div class="service-fields mb-3">
 					<div class="row">
 						<div class="col-lg-6">
@@ -64,15 +66,15 @@
 
 						<div class="col-lg-6">
 							<div class="form-group">
-								<label>Batch<span class="text-danger">*</span></label>
-								<input class="form-control" type="text" name="batch" value="{{$product->batch}}" required>
+								<label>Brand<span class="text-danger">*</span></label>
+								<input class="form-control" type="text" name="brand_name" value="{{$product->brand_name}}" required>
 							</div>
 						</div>
 
 					</div>
 				</div>
 
-                <div class="service-fields mb-3">
+                <!-- <div class="service-fields mb-3">
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
@@ -89,9 +91,9 @@
 						</div>
 
 					</div>
-				</div>
+				</div> -->
 
-                <div class="service-fields mb-3">
+                <!-- <div class="service-fields mb-3">
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
@@ -107,9 +109,9 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-                <div class="service-fields mb-3">
+                <!-- <div class="service-fields mb-3">
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
@@ -126,7 +128,7 @@
 						</div>
 
 					</div>
-				</div>
+				</div> -->
 
 
 					<div class="submit-section">
