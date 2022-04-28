@@ -81,11 +81,11 @@ function getIndianCurrency(float $number)
             <tr>
                 <td colspan="2" align="center" style="font-size: 30px;">
                     <strong>Rampari Ausadhalaya</strong>
-                    <h5 style="font-size: 15px;margin-top: 2px;">GSTIN NO - 10BCLPK9104P1ZE</h5>
-                    <h5 style="font-size: 15px;margin-top: 2px;">DL NO - 150308/309</h5>
-                    <h5 style="font-size: 15px;margin-top: 2px;">(A Unit of Shree Pradhan Healthcare Pvt Ltd)</h5>
-                    <h5 style="font-size: 15px;margin-top: 2px;">N.H-28, Khabra Muzaffarpur, Bihar-843136</h5>
-                    <h5 style="font-size: 15px;margin-top: 2px;">Email:shreepradhanhospital@gmail.com | Ph. 9199654999</h5>
+                    <h5 style="font-size: 15px;margin-top: 2px;"><strong>GSTIN NO - 10BCLPK9104P1ZE</strong></h5>
+                    <h5 style="font-size: 15px;margin-top: 2px;"><strong>DL NO - 150308/309</strong></h5>
+                    <h5 style="font-size: 15px;margin-top: 2px;"><strong>(A Unit of Shree Pradhan Healthcare Pvt Ltd)</strong></h5>
+                    <h5 style="font-size: 15px;margin-top: 2px;"><strong>N.H-28, Khabra Muzaffarpur, Bihar-843136</strong></h5>
+                    <h5 style="font-size: 15px;margin-top: 2px;"><strong>Email:shreepradhanhospital@gmail.com | Ph. 9199654999</strong></h5>
                 </td>
             </tr>
             <tr>
@@ -139,11 +139,11 @@ function getIndianCurrency(float $number)
             @foreach($orderitems as $orderitem)
             <?php $totalamt += $orderitem->total_amount; ?>
             <tr>
-                <td>{{$count++}}</td>
-                <td>{{$orderitem->medicine_category}}</td>
-                <td>{{$orderitem->medicine_name}}</td>
-                <td>{{round($orderitem->price)}}</td>
-                <td>{{$orderitem->quantity}}</td>
+                <td><strong>{{$count++}}</strong></td>
+                <td><strong>{{$orderitem->medicine_category}}</strong></td>
+                <td><strong>{{$orderitem->medicine_name}}</strong></td>
+                <td><strong>{{round($orderitem->price)}}</strong></td>
+                <td><strong>{{$orderitem->quantity}}</strong></td>
             </tr>
             @endforeach
 
