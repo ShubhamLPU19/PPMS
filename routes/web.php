@@ -22,6 +22,7 @@ use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\IPDReportController;
 use App\Http\Controllers\DraftController;
 use App\Http\Controllers\ProductBatchController;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -160,3 +161,5 @@ Route::get('/', function () {
 });
 
 Route::get('test',[SalesController::class,'test']);
+
+Route::get('testprint',[TestController::class,'index']);
