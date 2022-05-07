@@ -46,10 +46,10 @@
   </tbody>
 </table>
 <div class="row">
-    <div class="col-sm-3"></div>
+    <div class="col-sm-4"></div>
     <div class="col-sm-3"></div>
     <div class="col-sm-3"><strong>Total Amount:</strong></div>
-    <div class="col-sm-3">{{$purchase_amt}}</div>
+    <div class="col-sm-2" id="purchaseamt">{{$purchase_amt}}</div>
 </div>
 </br>
 <strong>Return</strong>
@@ -80,17 +80,79 @@
   </tbody>
 </table>
 <div class="row">
-    <div class="col-sm-3"></div>
+    <div class="col-sm-4"></div>
     <div class="col-sm-3"></div>
     <div class="col-sm-3"><strong>Total Amount:</strong></div>
-    <div class="col-sm-3">{{$return_amt}}</div>
+    <div class="col-sm-2">{{$return_amt}}</div>
 </div>
 </br>
-
+<?php $finalamt = $return_amt + $purchase_amt; ?>
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3"><strong>Total Amount:</strong></div>
+    <div class="col-sm-2" id="finalamt">{{$finalamt}}</div>
+</div>
+</br>
+<div class="service-fields mb-3">
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="form-group">
+            Discount Percent(%)<input class="form-control discountcheck" type="checkbox" name="discountcheck" value="1" onchange="valueChanged()">
+            </div>
+        </div>
+        <div class="col-lg-4 discountbox" style="display:none;">
+            <div class="form-group">
+            Discount Percent(%)<input class="form-control" type="number" id="discountpercent" name="discount_percent" value="">
+            </div>
+            <button class="btn btn-success applyBtn">Apply</button>
+        </div>
+    </div>
+</div>
+<div class="service-fields mb-3">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="form-group">
+            <label for="exampleFormControlSelect1">Total Amount</label>
+            <input class="form-control" type="number" id="" name="amount" value="">
+            </div>
+        </div>
+        <div class="col-lg-4">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Select Type</label>
+            <select class="form-control">
+            <option value="">Please Select</option>
+            <option value="paid">Paid</option>
+            <option value="refund">Refund</option>
+            </select>
+        </div>
+            <button class="btn btn-success applyBtn">Submit</button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('page-js')
 	<!-- Select2 JS -->
 	<script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
+
+    <script>
+        function valueChanged()
+        {
+            if($('.discountcheck').is(":checked"))
+                $(".discountbox").show();
+            else
+                $(".discountbox").hide();
+        }
+
+        $('.applyBtn').click(function(e){
+            e.preventDefault();
+            var purchaseamt = $('#finalamt').text();
+            var discountpercent = $('#discountpercent').val();
+            var amount = (discountpercent/100)*purchaseamt;
+            var updatedAmt = Math.round(purchaseamt - amount);
+            $('#finalamt').text(updatedAmt);
+        });
+    </script>
 @endpush
 

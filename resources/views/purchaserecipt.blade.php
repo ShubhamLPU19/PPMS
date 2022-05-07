@@ -1,4 +1,4 @@
-
+@extends('layouts.app')
 @push('page-css')
 <!-- Select2 css-->
 <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
@@ -75,7 +75,7 @@ function getIndianCurrency(float $number)
 ?>
 
 <a href="{{route('addorder')}}" class="btn btn-success text-center backBtn">Back</a></br>
-
+@section('content')
 <div style="max-width: 800px; width: 100%; margin: 0 auto;">
         <table style="border-collapse: collapse;width: 100%;">
             <tr>
@@ -220,7 +220,7 @@ function getIndianCurrency(float $number)
             <button onclick="window.print()" class="btn no-print btn-lg btn-info printBtn">Print <i class="fas fa-print"></i></button>
         </div>
     </div>
-
+    @endsection
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>

@@ -9,7 +9,8 @@ use Carbon\Carbon;
 class IPDReportController extends Controller
 {
     public function index(){
-        $reports = Customer::whereDate('created_at', Carbon::today())->whereNotNull('ipd_id')->orderBy("id","desc")->get();
+        $reports = Customer::whereNotNull('ipd_id')->orderBy("id","desc")->get();
+        // $reports = Customer::whereDate('created_at', Carbon::today())->whereNotNull('ipd_id')->orderBy("id","desc")->get();
         return view("ipd_report.index",compact('reports'));
     }
 
