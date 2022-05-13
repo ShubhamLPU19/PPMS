@@ -48,7 +48,7 @@
 <div class="row">
     <div class="col-sm-4"></div>
     <div class="col-sm-3"></div>
-    <div class="col-sm-3"><strong>Total Amount:</strong></div>
+    <div class="col-sm-3"><strong>Total Purchase Amount:</strong></div>
     <div class="col-sm-2" id="purchaseamt">{{$purchase_amt}}</div>
 </div>
 </br>
@@ -82,11 +82,12 @@
 <div class="row">
     <div class="col-sm-4"></div>
     <div class="col-sm-3"></div>
-    <div class="col-sm-3"><strong>Total Amount:</strong></div>
+    <div class="col-sm-3"><strong>Total Return Amount:</strong></div>
     <div class="col-sm-2">{{$return_amt}}</div>
 </div>
 </br>
-<?php $finalamt = $return_amt + $purchase_amt; ?>
+<?php //$finalamt = $return_amt + $purchase_amt;
+$finalamt = $purchase_amt; ?>
 <div class="row">
     <div class="col-sm-4"></div>
     <div class="col-sm-3"></div>
@@ -94,6 +95,42 @@
     <div class="col-sm-2" id="finalamt">{{$finalamt}}</div>
 </div>
 </br>
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3"><strong>Paid Amount:</strong></div>
+    <div class="col-sm-2" id="finalamt">{{$totalPaid}}</div>
+</div>
+</br>
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3"><strong>Amount:</strong></div>
+    <div class="col-sm-2" id="finalamt">{{$finalamt - $return_amt}}</div>
+</div>
+@if($totalPaid> $finalamt - $return_amt)
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3"><strong>Return Amount:</strong></div>
+    <div class="col-sm-2" id="finalamt">{{$totalPaid - ($finalamt - $return_amt)}}</div>
+</div>
+@elseif($totalPaid< $finalamt - $return_amt)
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3"><strong>Left Amount:</strong></div>
+    <div class="col-sm-2" id="finalamt">{{($finalamt - $return_amt) - $totalPaid}}</div>
+</div>
+@else
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3"><strong>Balance:</strong></div>
+    <div class="col-sm-2" id="finalamt">{{($finalamt - $return_amt) - $totalPaid}}</div>
+</div>
+@endif
+
 <div class="service-fields mb-3">
     <div class="row">
         <div class="col-lg-2">
@@ -110,25 +147,29 @@
     </div>
 </div>
 <div class="service-fields mb-3">
+    <form method="post" action="{{route('storeipd')}}">
+        @csrf
+        <input type="hidden" name="ipd_id" value="{{$ipd_id}}">
     <div class="row">
         <div class="col-lg-4">
             <div class="form-group">
             <label for="exampleFormControlSelect1">Total Amount</label>
-            <input class="form-control" type="number" id="" name="amount" value="">
+            <input class="form-control" type="number" id="" name="amount" value="" required>
             </div>
         </div>
         <div class="col-lg-4">
         <div class="form-group">
             <label for="exampleFormControlSelect1">Select Type</label>
-            <select class="form-control">
+            <select class="form-control" name="sale_type" required>
             <option value="">Please Select</option>
             <option value="paid">Paid</option>
             <option value="refund">Refund</option>
             </select>
         </div>
-            <button class="btn btn-success applyBtn">Submit</button>
+        <button class="btn btn-primary submit-btn" type="submit" name="" value="submit">Submit</button>
         </div>
     </div>
+    </form>
 </div>
 @endsection
 

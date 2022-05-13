@@ -78,7 +78,7 @@ function getIndianCurrency(float $number)
 }
 
 ?>
-<a href="{{route('return')}}" id="backButton" class="btn btn-success text-center backBtn">Back</a></br>
+<a href="{{route('addorder')}}" id="backButton" class="btn btn-success text-center backBtn">Back</a></br>
     <div style="max-width: 800px; width: 100%; margin: 0 auto;">
       <table style="border-collapse: collapse;width: 100%;">
         <tr>
@@ -99,15 +99,6 @@ function getIndianCurrency(float $number)
                 <td>: <strong>{{$customer->name}}</strong></td>
               </tr>
 
-              <!-- <tr>
-                <td><strong>Mobile No.</strong></td>
-                <td>: +91 9948473495</td>
-              </tr> -->
-
-              <!-- <tr>
-                <td><strong>Doctor Name</strong></td>
-                <td>: {{$customer->doctor_name}}</td>
-              </tr> -->
               @if(!empty($customer->ipd_id))
                 <tr>
                     <td><strong>IPD No</strong></td>
@@ -116,7 +107,7 @@ function getIndianCurrency(float $number)
               @endif
               <tr>
                 <td><strong>Bill Date:</strong></td>
-                <td>: <strong>{{date('d-m-Y',strtotime($customer->created_at))}}</strong></td>
+                <td>: <strong>{{date('d-m-Y')}}</strong></td>
               </tr>
             </table>
           </td>
@@ -128,12 +119,12 @@ function getIndianCurrency(float $number)
               </tr>
               <tr>
                 <td><strong>Bill No</strong></td>
-                <td>: {{$customer->order__id}} </td>
+                <td>: {{$customer->order__id + 1}} </td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td><strong>Bill Type</strong></td>
                 <td>: {{ucwords($customer->sale_type)}} </td>
-              </tr>
+              </tr> -->
             </table>
           </td>
         </tr>
@@ -142,23 +133,35 @@ function getIndianCurrency(float $number)
       <table style="border-collapse: collapse;width: 100%; border: 1px solid; text-align: center;">
         <tr>
           <td style="border-bottom: 1px solid;"><strong>S.No.</strong></td>
-          <td style="border-bottom: 1px solid;"><strong>Medicine Category</strong></td>
-          <td style="border-bottom: 1px solid;"><strong>Medicine Name</strong></td>
-          <td style="border-bottom: 1px solid;"><strong>Price</strong></td>
-          <td style="border-bottom: 1px solid;"><strong>Quantity</strong></td>
+          <td style="border-bottom: 1px solid;"><strong>Order Id</strong></td>
+          <td style="border-bottom: 1px solid;"><strong>Amount</strong></td>
+          <td style="border-bottom: 1px solid;"><strong>Paid Amount</strong></td>
+          <td style="border-bottom: 1px solid;"><strong>Sale Type</strong></td>
         </tr>
-        <?php $count=1; $totalamt = 0.0; ?>
-        @foreach($orderitems as $orderitem)
-        <?php $totalamt += $orderitem->total_amount; ?>
+        <?php $count=1; ?>
+        @foreach($purchase as $value)
         <tr>
           <td>{{$count++}}</td>
           <td style="text-align: leftt;">
-            {{$orderitem->medicine_category}}
+            {{$value->order__id}}
             <!-- <div>Bed Room Charges/ General Room</div> -->
           </td>
-          <td>{{$orderitem->medicine_name}}</td>
-          <td>{{round($orderitem->price)}}</td>
-          <td>{{$orderitem->quantity}}</td>
+          <td>{{$value->amount}}</td>
+          <td>{{$value->paid_amount}}</td>
+          <td>{{$value->sale_type}}</td>
+        </tr>
+        @endforeach
+        <?php $count=1; ?>
+        @foreach($return as $return)
+        <tr>
+          <td>{{$count++}}</td>
+          <td style="text-align: leftt;">
+            {{$return->order__id}}
+            <!-- <div>Bed Room Charges/ General Room</div> -->
+          </td>
+          <td>{{$return->amount}}</td>
+          <td>{{$return->paid_amount}}</td>
+          <td>{{$return->sale_type}}</td>
         </tr>
         @endforeach
         <tr>
@@ -169,7 +172,7 @@ function getIndianCurrency(float $number)
           </td>
 
           <td style="border-top:1px solid;">Total Amount :</td>
-          <td style="border-top:1px solid;">{{getIndianCurrency($totalamt)}}</td>
+          <td style="border-top:1px solid;">0</td>
         </tr>
         <?php $discountamt = 0;?>
         @if($customer->discount_amount > 0)
@@ -181,7 +184,7 @@ function getIndianCurrency(float $number)
         <?php $returnamt = 0; $returnamt = $customer->paid_amount - $customer->amount; ?>
         <tr>
           <td>Total Amount : </td>
-          <td>{{getIndianCurrency($totalamt - $customer->discount_amount)}}</td>
+          <td>0</td>
         </tr>
         @endif
         <tr>

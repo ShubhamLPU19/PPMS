@@ -116,6 +116,7 @@ Route::group(['middleware'=>['auth']],function (){
 
     Route::get('ipdreport',[IPDReportController::class,'index'])->name('ipdreport');
     Route::get('viewipd/{ipd_id}', [IPDReportController::class,'viewipd'])->name('viewipd');
+    Route::post('storeipd',[IPDReportController::class,'storeIpd'])->name('storeipd');
 
     Route::get('drafts',[DraftController::class,'index'])->name('drafts');
     Route::post('movetocart',[DraftController::class,'movetocart'])->name('movetocart');
