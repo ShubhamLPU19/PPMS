@@ -86,7 +86,7 @@ class ProductController extends Controller
     {
         // dd($request->all());
         $this->validate($request,[
-            'medicine_name'=>'required|max:200',
+            'medicine_name'=>'required|unique:product_masters',
             'category_id'=>'required|min:1',
             'supplier_id'=>'required',
         ]);
