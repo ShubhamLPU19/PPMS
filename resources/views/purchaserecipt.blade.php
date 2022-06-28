@@ -164,12 +164,12 @@ function getIndianCurrency(float $number)
         <tr>
           <td colspan="3" rowspan="4" style="border-top:1px solid; text-align: left;">
             <!-- <div><strong style="border-bottom: 1px solid;">Receipt Details :</strong></div>
-           <div style="padding-top: 10px;">Dr. xyz kumar yadav</div>
+           <div style="padding-top: 10px;">Dr. xyz kumar yadav</div>getIndianCurrency
            <div style="max-width: 80%; padding-top: 10px;">dslajf ldsajf; jasl;f jlksa jfdjdsaf lkjdsa f;lkdsajf ;jdsaf ;lks jfda;sjaf;l dsaf</div> -->
           </td>
 
           <td style="border-top:1px solid;">Total Amount :</td>
-          <td style="border-top:1px solid;">{{getIndianCurrency($totalamt)}}</td>
+          <td style="border-top:1px solid;">{{round($totalamt)}}</td>
         </tr>
         <?php $discountamt = 0;?>
         @if($customer->discount_amount > 0)
@@ -181,7 +181,7 @@ function getIndianCurrency(float $number)
         <?php $returnamt = 0; $returnamt = $customer->paid_amount - $customer->amount; ?>
         <tr>
           <td>Total Amount : </td>
-          <td>{{getIndianCurrency($totalamt - $customer->discount_amount)}}</td>
+          <td>{{$totalamt - $customer->discount_amount}}</td>
         </tr>
         @endif
         <tr>
@@ -191,6 +191,10 @@ function getIndianCurrency(float $number)
         <tr>
           <td>Change Amount :</td>
           <td>{{round($customer->paid_amount - $customer->amount)}}</td>
+        </tr>
+        <tr>
+          <td style="border-top:1px solid;">In Words :</td>
+          <td style="border-top:1px solid;">{{getIndianCurrency(round($totalamt))}}</td>
         </tr>
       </table>
 
