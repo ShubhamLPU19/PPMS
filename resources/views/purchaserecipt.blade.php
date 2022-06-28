@@ -193,8 +193,8 @@ function getIndianCurrency(float $number)
           <td>{{round($customer->paid_amount - $customer->amount)}}</td>
         </tr>
         <tr>
-          <td style="border-top:1px solid;">In Words :</td>
-          <td style="border-top:1px solid;">{{getIndianCurrency(round($totalamt))}}</td>
+          <td>In Words :</td>
+          <td>{{getIndianCurrency(round($totalamt))}}</td>
         </tr>
       </table>
 
