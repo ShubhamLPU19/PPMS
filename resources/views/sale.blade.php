@@ -19,20 +19,13 @@
     <form method="post" id="contact_us" action="javascript:void(0)">
     <div class="row">
     <div class="col-sm-12">
-        <input class="typeahead form-control" type="text" id="search" name="medicinename" placeholder="Please enter medicine name"></br>
+        <input class="typeahead form-control" type="text" id="search" name="medicinename" placeholder="Please enter medicine name" required></br>
     </div>
-    <!-- <div class="col-sm-6">
-        <div class="form-group">
-            <select class="select2 form-select form-control" name="batch_name" id="batch_name" required>
-                <option value="">Select Batch</option>
-                <option value=""></option>
-            </select>
-        </div>
-    </div> -->
+
     </div>
     <div class="row">
     <div class="col-sm-6">
-      <input type="number" class="form-control" placeholder="Quantity" name="quantity">
+      <input type="text" class="form-control" placeholder="Quantity" id="quantity" name="quantity" required>
     </div>
     <div class="col">
      <button type="submit" id="send_form" class="btn btn-success">Add</button>
@@ -72,12 +65,13 @@
     <tr>
       <th scope="row">{{$count++}}</th>
       <td>{{$orderitem->medicine_category}}</td>
-      <td id="mname">{{$orderitem->medicine_name}}</td>
+      <td class="mname">{{$orderitem->medicine_name}}</td>
       <td>{{$orderitem->price}}</td>
-      <td><input type="text" id="qty" value="{{$orderitem->quantity}}"></td>
+      <td><input type="text" class="qty" value="{{$orderitem->quantity}}"></td>
       <td>{{ $orderitem->price * $orderitem->quantity }}</td>
-      <input type="hidden" id="batch" name="batch"  value="{{$orderitem->batch_no}}"/>
-      <td><button class="btn btn-success text-center update" data-id="{{$orderitem->id}}">Update</button>||<button data-id="{{$orderitem->id}}" class="btn btn-danger text-center delete">Delete</button></td>
+      <input type="hidden" class="batch" name="batch"  value="{{$orderitem->batch_no}}"/>
+      <input type="hidden" class="batch_id" name="batch_id" value="{{$orderitem->batch_id}}"/>
+      <td><button class="btn btn-success text-center update" data-batch="{{$orderitem->batch_no}}" data-batch_id="{{$orderitem->batch_id}}" data-qty="{{$orderitem->quantity}}" data-mname="{{$orderitem->medicine_name}}" data-id="{{$orderitem->id}}">Update</button>||<button data-batch="{{$orderitem->batch_no}}" data-batch_id="{{$orderitem->batch_id}}" data-qty="{{$orderitem->quantity}}" data-mname="{{$orderitem->medicine_name}}" data-id="{{$orderitem->id}}" class="btn btn-danger text-center delete">Delete</button></td>
     </tr>
     @endforeach
     @endif
@@ -155,7 +149,7 @@
                 dataType: "json",
                 success: function(data){
                 var resp = $.map(data,function(obj){
-                    var result = obj.name + '_' + obj.expiry + '_' + obj.qty + '_' + obj.batch;
+                    var result = obj.name + '_' + obj.expiry + '_' + obj.qty + '_' + obj.batch + '_' + obj.batch_id;
                     return result;
 
                 });
@@ -169,95 +163,120 @@
     });
 
 $(document).ready(function(){
-$('#send_form').click(function(e){
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+    $('#send_form').click(function(e){
+        var search = $("#search").val();
+        var quantity = $("#quantity").val();
+        if(search == '')
+        {
+            alert("Please enter medicine name.");
+        }
+        if(quantity == '')
+        {
+            alert("Please enter quantity.");
+        }
+        if(search != '' && quantity != '')
+        {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#send_form').html('Please wait..');
+
+            /* Submit form data using ajax*/
+            $.ajax({
+                url: "{{ route('addorder')}}",
+                method: 'post',
+                data: $('#contact_us').serialize(),
+                success: function(response){
+                    $('#send_form').html('Submit');
+                    $('#res_message').show();
+                    $('#res_message').html(response);
+                    $('#msg_div').removeClass('d-none');
+                    setTimeout(function(){
+                    location.reload();
+                    },1000);
+                    document.getElementById("contact_us").reset();
+                    setTimeout(function(){
+                    $('#res_message').hide();
+                    $('#msg_div').hide();
+                    },1000);
+                    //--------------------------
+                }
+            });
         }
     });
 
-   $('#send_form').html('Please wait..');
-
-   /* Submit form data using ajax*/
-   $.ajax({
-      url: "{{ route('addorder')}}",
-      method: 'post',
-      data: $('#contact_us').serialize(),
-      success: function(response){
-            $('#send_form').html('Submit');
-            $('#res_message').show();
-            $('#res_message').html(response);
-            $('#msg_div').removeClass('d-none');
-            setTimeout(function(){
-            location.reload();
-            },1000);
-            document.getElementById("contact_us").reset();
-            setTimeout(function(){
-            $('#res_message').hide();
-            $('#msg_div').hide();
-            },1000);
-         //--------------------------
-      }});
-   });
-});
-$('.update').click(function(e){
-    var qty = $("#qty").val();
-    var id = $(this).attr("data-id");
-    var mname = $("#mname").text();
-    var batch = $("#batch").val();
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-   $.ajax({
-      url: "itemupdate/"+id,
-      type: 'PUT',
-      data: {qty:qty,id:id,mname:mname,batch:batch},
-      success: function(response){
-            $('#res_message').show();
-            $('#res_message').html(response);
-            $('#msg_div').removeClass('d-none');
-            setTimeout(function(){
-            location.reload();
-            }, 1000);
-            setTimeout(function(){
-            $('#res_message').hide();
-            $('#msg_div').hide();
-            },1000);
-        }
-    });
 });
 
-$('.delete').click(function(e){
-    var qty = $("#qty").val();
-    var id = $(this).attr("data-id");
-    var mname = $("#mname").text();
-    var batch = $("#batch").val();
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
+
+        $(document).on('click','.update', function(){
+            var qty = $(this).parent().siblings().find(".qty").val();
+            var id = $(this).attr("data-id");
+            var mname = $(this).attr("data-mname");
+            var batch = $(this).attr("data-batch");
+            var batch_id = $(this).attr("data-batch_id");
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "itemupdatesale/"+id,
+                type: 'PUT',
+                data: {qty:qty,id:id,mname:mname,batch:batch,batch_id:batch_id},
+                success: function(response){
+                    $('#res_message').show();
+                    $('#res_message').html(response);
+                    $('#msg_div').removeClass('d-none');
+                    setTimeout(function(){
+                    location.reload();
+                    }, 1000);
+                    setTimeout(function(){
+                    $('#res_message').hide();
+                    $('#msg_div').hide();
+                    },1000);
+                }
+            });
+        });
+
+    $(document).on('click','.delete', function(){
+        let qty = $(this).parent().siblings().find(".qty").val();
+        let id = $(this).attr("data-id");
+        let mname = $(this).attr("data-mname");
+        let batch = $(this).attr("data-batch");
+        let batch_id = $(this).attr("data-batch_id");
+        console.log('qty',qty);
+        console.log('id',id);
+        console.log('mname',mname);
+        console.log('batch',batch);
+        console.log('batch_id',batch_id);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "saleitemdelete/"+id,
+            type: 'DELETE',
+            data: {qty:qty,id:id,mname:mname,batch:batch,batch_id:batch_id},
+            success: function(response){
+            console.log(response);
+                $('#res_message').show();
+                $('#res_message').html(response);
+                $('#msg_div').removeClass('d-none');
+                setTimeout(function(){
+                location.reload();
+                }, 1000);
+                setTimeout(function(){
+                    $('#res_message').hide();
+                    $('#msg_div').hide();
+                },1000);
+            }
+        });
     });
-  $.ajax({
-    url: "itemdelete/"+id,
-    type: 'DELETE',
-    data: {qty:qty,id:id,mname:mname,batch:batch},
-    success: function(response){
-      console.log(response);
-        $('#res_message').show();
-        $('#res_message').html(response);
-        $('#msg_div').removeClass('d-none');
-        setTimeout(function(){
-        location.reload();
-        }, 1000);
-        setTimeout(function(){
-            $('#res_message').hide();
-            $('#msg_div').hide();
-        },1000);
-    }
-  });
-});
 
 function valueChanged()
 {

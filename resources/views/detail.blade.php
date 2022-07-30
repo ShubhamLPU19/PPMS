@@ -35,9 +35,6 @@
 								<th>Location</th>
                                 <th>Available Quantity</th>
                                 <th>Used Quantity</th>
-                                <th>Total Quantity</th>
-                                <th>Created At</th>
-								<th class="action-btn">Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -50,22 +47,6 @@
                                     <td> {{ $batch->location }}</td>
 									<td>{{$batch->available_quantity}}</td>
                                     <td>{{$batch->used_quantity}}</td>
-                                    <td>{{$batch->total_quantity}}
-									<td>
-									{{date_format(date_create($batch->created_at),"d M, Y")}}</span>
-									</td>
-									<td>
-										<div class="actions">
-
-                                           <a class="btn btn-sm bg-success-light" href="{{route('editBatch',$batch->id)}}">
-												<i class="fe fe-pencil"></i> Edit Batch
-											</a>
-
-											<!-- <a href="{{route('status',$batch->id)}}" href="javascript:void(0);" class="btn btn-sm bg-danger-light">
-												<i class="fe fe-trash"></i> Delete
-											</a> -->
-										</div>
-									</td>
 								</tr>
 							@endforeach
 

@@ -48,7 +48,7 @@
 						<div class="col-lg-6">
 							<div class="form-group">
 								<label>Quantity<span class="text-danger">*</span></label>
-								<input class="form-control" type="text" name="quantity" value="{{$productbatch->available_quantity}}" required>
+								<input class="form-control" type="text" name="quantity" value="{{$productbatch->available_quantity}}" required readonly>
 							</div>
 						</div>
 
@@ -59,6 +59,17 @@
 							</div>
 						</div>
 
+					</div>
+				</div>
+                <input type="hidden" name="total_quantity" value="{{$productbatch->total_quantity}}"/>
+                <div class="service-fields mb-3">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label>New Quantity<span class="text-danger">*</span></label>
+								<input class="form-control" type="text" name="newquantity" value="">
+							</div>
+						</div>
 					</div>
 				</div>
 

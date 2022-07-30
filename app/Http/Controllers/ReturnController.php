@@ -21,15 +21,14 @@ class ReturnController extends Controller
 {
     public function index()
     {
-        $title = "sales";
+        $title = "Return";
         $orderitems = OrderItem::where('order_id',Session::get('id'))->get();
-
         return view('return.index',compact('title','orderitems'));
     }
 
     public function autocomplete(Request $request)
     {
-        $result = Product::select('product_masters.medicine_name','product_masters.id','product_batch.available_quantity','product_batch.expiry_date','product_batch.batch_name')
+        $result = Product::select('product_masters.medicine_name','product_masters.id','product_batch.available_quantity','product_batch.expiry_date','product_batch.batch_name','product_batch.id as batch_id')
         ->leftjoin('product_batch','product_masters.id','=','product_batch.product_id')
         ->where('product_masters.medicine_name', 'like', "{$request->term}%")
         ->whereNotNull('product_batch.batch_name')
@@ -39,7 +38,7 @@ class ReturnController extends Controller
         ->get();
         $response = array();
         foreach($result as $res){
-            $response[] = array("name"=>$res->medicine_name,"qty"=>$res->available_quantity,"expiry"=>$res->expiry_date,"id"=>$res->id,"batch"=>$res->batch_name);
+            $response[] = array("name"=>$res->medicine_name,"qty"=>$res->available_quantity,"expiry"=>$res->expiry_date,"id"=>$res->id,"batch"=>$res->batch_name,"batch_id"=>$res->batch_id);
         }
         return response()->json($response);
     }
@@ -58,8 +57,9 @@ class ReturnController extends Controller
         $expiry = $arrData[1];
         $availQty = $arrData[2];
         $batch = $arrData[3];
+        $batchId = $arrData[4];
         $product = Product::where(["medicine_name"=>$medicine_name])->first();
-        $alldata = ProductBatch::where(["batch_name"=>$batch])->first();
+        $alldata = ProductBatch::where(["id"=>$batchId])->first();
         $category = Category::where(["id"=>$product->category_id])->first();
         if(empty(Session::get('id')))
         {
@@ -82,11 +82,13 @@ class ReturnController extends Controller
         $orderitem->total_amount = $alldata->price * $request->quantity;
         $orderitem->expire_date = $alldata->expiry_date;
         $orderitem->batch_no = $alldata->batch_name;
+        $orderitem->batch_id = $batchId;
         $orderitem->gst_rate = $alldata->gst_percent;
         $orderitem->gst_amount = (($alldata->price * $request->quantity) *  $alldata->gst_percent)/100;
         $orderitem->save();
 
-        ProductBatch::where(["batch_name"=>$batch])->increment("available_quantity", $request->quantity);
+        // ProductBatch::where(["id"=>$batchId])->increment("available_quantity", $request->quantity);
+        ProductBatch::where(["id"=>$batchId])->update(["available_quantity"=>$alldata->available_quantity + $request->quantity]);
         $notification = array(
             'message'=>"Product has been added",
             'alert-type'=>'success',
@@ -133,7 +135,7 @@ class ReturnController extends Controller
             Session::forget('id');
         }
         $orderitems = OrderItem::where(['order_id'=>$request->order_id])->get();
-        $customer = Customer::where(['order__id'=>$request->order_id])->first();
+        $customer = Customer::where(['order__id'=>$request->order_id,"sale_type"=>"return"])->first();
         return view('return.returnrecipt',compact('orderitems','customer'));
     }
 
@@ -141,17 +143,18 @@ class ReturnController extends Controller
     {
         $orderItem = OrderItem::where(['id'=>$request->id])->first();
         $product = ProductBatch::where(['batch_name'=>$request->batch])->first();
+        // dd($product);
         $countval = 0;
-        if($orderItem->quantity > $request->qty)
+        $totalAmt = 0.0;
+        if(($product->available_quantity + $orderItem->quantity) >= $request->qty)
         {
-            $countval = $orderItem->quantity - $request->qty;
-            OrderItem::where(['id'=>$request->id])->update(['quantity'=>$countval]);
-            ProductBatch::where(["batch_name"=>$request->batch])->update(['available_quantity'=>$product->available_quantity + $countval]);
-        }elseif($orderItem->quantity < $request->qty)
+            $countval = $request->qty;
+            $totalAmt = $request->qty * $product->price;
+            OrderItem::where(['id'=>$request->id])->update(['quantity'=>$countval,'total_amount'=>$totalAmt]);
+            ProductBatch::where(["id"=>$request->batch_id])->update(['available_quantity'=>($product->available_quantity - $orderItem->quantity) + $countval,"used_quantity"=>($product->used_quantity - $orderItem->quantity) + $countval]);
+        }else
         {
-            $countval = $request->qty - $orderItem->quantity;
-            OrderItem::where(['id'=>$request->id])->update(['quantity'=>$request->qty ]);
-            ProductBatch::where(["batch_name"=>$request->batch])->update(['available_quantity'=>$product->available_quantity - $countval]);
+            return "Product quantity not updated.";
         }
         return "Product quantity updated.";
     }
@@ -161,14 +164,16 @@ class ReturnController extends Controller
         $orderitem = OrderItem::find($request->id);
         $orderitem->delete();
 
-        ProductBatch::where(["batch_name"=>$request->batch])->increment('available_quantity',$request->qty);
+        // ProductBatch::where(["batch_name"=>$request->batch])->increment('available_quantity',$request->qty);
+        $batchData = ProductBatch::where(["id"=>$request->batch_id])->first();
+        ProductBatch::where(["id"=>$request->batch_id])->update(['available_quantity'=> $batchData->available_quantity - $request->qty]);
 
         return "Product Removed From Cart.";
     }
 
     public function returnreport()
     {
-        $returnreports = Customer::whereDate('created_at', Carbon::today())->where(["sale_type"=>"return"])->orderBy("id","desc")->get();
+        $returnreports = Customer::where(["sale_type"=>"return"])->orderBy("id","desc")->get();
         return view("return.returnreport",compact('returnreports'));
     }
 

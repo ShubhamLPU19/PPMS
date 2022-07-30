@@ -27,15 +27,14 @@ class SalesController extends Controller
      */
     public function index()
     {
-        $title = "sales";
+        $title = "Sales";
         $orderitems = OrderItem::where('order_id',Session::get('id'))->get();
-
         return view('sale',compact('title','orderitems'));
     }
 
     public function autocomplete(Request $request)
     {
-        $result = Product::select('product_masters.medicine_name','product_masters.id','product_batch.available_quantity','product_batch.expiry_date','product_batch.batch_name')
+        $result = Product::select('product_masters.medicine_name','product_masters.id','product_batch.available_quantity','product_batch.expiry_date','product_batch.batch_name','product_batch.id as batch_id')
         ->leftjoin('product_batch','product_masters.id','=','product_batch.product_id')
         ->where('product_masters.medicine_name', 'like', "{$request->term}%")
         ->whereNotNull('product_batch.batch_name')
@@ -45,7 +44,7 @@ class SalesController extends Controller
         ->get();
         $response = array();
         foreach($result as $res){
-            $response[] = array("name"=>$res->medicine_name,"qty"=>$res->available_quantity,"expiry"=>$res->expiry_date,"id"=>$res->id,"batch"=>$res->batch_name);
+            $response[] = array("name"=>$res->medicine_name,"qty"=>$res->available_quantity,"expiry"=>$res->expiry_date,"id"=>$res->id,"batch"=>$res->batch_name,"batch_id"=>$res->batch_id);
         }
         return response()->json($response);
     }
@@ -70,42 +69,51 @@ class SalesController extends Controller
         $expiry = $arrData[1];
         $availQty = $arrData[2];
         $batch = $arrData[3];
-        $product = Product::where(["medicine_name"=>$medicine_name])->first();
-        $alldata = ProductBatch::where(["batch_name"=>$batch])->first();
-        $category = Category::where(["id"=>$product->category_id])->first();
-        if(empty(Session::get('id')))
+        $batchId = $arrData[4];
+        if($availQty >= $request->quantity)
         {
-            $order = new Order();
-            $order->status = "open";
-            $order->save();
+            $product = Product::where(["medicine_name"=>$medicine_name])->first();
+            // $alldata = ProductBatch::where(["batch_name"=>$batch])->first();
+            $alldata = ProductBatch::where(["id"=>$batchId])->first();
+            $category = Category::where(["id"=>$product->category_id])->first();
+            if(empty(Session::get('id')))
+            {
+                $order = new Order();
+                $order->status = "open";
+                $order->save();
+            }
+
+            if(empty(Session::get('id'))){
+                $id = $order->id;
+                Session::put('id', $id);
+            }
+
+            $orderitem = new OrderItem();
+            $orderitem->order_id = Session::get('id');
+            $orderitem->medicine_category = $category->name;
+            $orderitem->medicine_name = $medicine_name;
+            $orderitem->price = $alldata->price;
+            $orderitem->quantity = $request->quantity;
+            $orderitem->total_amount = $alldata->price * $request->quantity;
+            $orderitem->expire_date = $alldata->expiry_date;
+            $orderitem->batch_no = $alldata->batch_name;
+            $orderitem->batch_id = $batchId;
+            $orderitem->gst_rate = $alldata->gst_percent;
+            $orderitem->gst_amount = (($alldata->price * $request->quantity) *  $alldata->gst_percent)/100;
+            $orderitem->save();
+
+            // Product::where(["medicine_name"=>$request->medicinename])->update(["quantity"=> $alldata->quantity - $request->quantity]);
+            // ProductBatch::where(["id"=>$batchId])->decrement("available_quantity", $request->quantity)->increment("used_quantity", $request->quantity);
+            ProductBatch::where(["id"=>$batchId])->update(["available_quantity"=>$alldata->available_quantity - $request->quantity,"used_quantity"=>$alldata->used_quantity + $request->quantity]);
+            $notification = array(
+                'message'=>"Product has been added",
+                'alert-type'=>'success',
+            );
+            return "Product Added to Cart.";
         }
-
-        if(empty(Session::get('id'))){
-            $id = $order->id;
-            Session::put('id', $id);
+        else{
+            return "Order quantity is greater than available quantity.";
         }
-
-        $orderitem = new OrderItem();
-        $orderitem->order_id = Session::get('id');
-        $orderitem->medicine_category = $category->name;
-        $orderitem->medicine_name = $medicine_name;
-        $orderitem->price = $alldata->price;
-        $orderitem->quantity = $request->quantity;
-        $orderitem->total_amount = $alldata->price * $request->quantity;
-        $orderitem->expire_date = $alldata->expiry_date;
-        $orderitem->batch_no = $alldata->batch_name;
-        $orderitem->gst_rate = $alldata->gst_percent;
-        $orderitem->gst_amount = (($alldata->price * $request->quantity) *  $alldata->gst_percent)/100;
-        $orderitem->save();
-
-        // Product::where(["medicine_name"=>$request->medicinename])->update(["quantity"=> $alldata->quantity - $request->quantity]);
-        ProductBatch::where(["batch_name"=>$batch])->decrement("available_quantity", $request->quantity);
-        $notification = array(
-            'message'=>"Product has been added",
-            'alert-type'=>'success',
-        );
-
-        return "Product Added to Cart.";
     }
 
     public function checkout(Request $request)
@@ -160,7 +168,7 @@ class SalesController extends Controller
             Session::forget('id');
         }
         $orderitems = OrderItem::where(['order_id'=>$request->order_id])->get();
-        $customer = Customer::where(['order__id'=>$request->order_id])->first();
+        $customer = Customer::where(['order__id'=>$request->order_id,"sale_type"=>"purchase"])->first();
         return view('purchaserecipt',compact('orderitems','customer'));
     }
 
@@ -174,23 +182,19 @@ class SalesController extends Controller
     public function update(Request $request)
     {
         $orderItem = OrderItem::where(['id'=>$request->id])->first();
-        $product = ProductBatch::where(['batch_name'=>$request->batch])->first();
+        // $product = ProductBatch::where(['batch_name'=>$request->batch])->first();
+        $product = ProductBatch::where(['id'=>$request->batch_id])->first();
         $countval = 0;
         $totalAmt = 0.0;
-        if($orderItem->quantity > $request->qty)
+        if(($product->available_quantity + $orderItem->quantity) >= $request->qty)
         {
-            // $countval = $orderItem->quantity - $request->qty;
             $countval = $request->qty;
             $totalAmt = $request->qty * $product->price;
             OrderItem::where(['id'=>$request->id])->update(['quantity'=>$countval,'total_amount'=>$totalAmt]);
-            ProductBatch::where(["batch_name"=>$request->batch])->update(['available_quantity'=>$product->available_quantity + $countval]);
-        }elseif($orderItem->quantity < $request->qty)
+            ProductBatch::where(["id"=>$request->batch_id])->update(['available_quantity'=>($product->available_quantity + $orderItem->quantity) - $countval,"used_quantity"=>($product->used_quantity - $orderItem->quantity) + $countval]);
+        }else
         {
-            // $countval = $request->qty - $orderItem->quantity;
-            $countval = $request->qty;
-            $totalAmt = $request->qty * $product->price;
-            OrderItem::where(['id'=>$request->id])->update(['quantity'=>$request->qty, 'total_amount'=>$totalAmt]);
-            ProductBatch::where(["batch_name"=>$request->batch])->update(['available_quantity'=>$product->available_quantity - $countval]);
+            return "Product quantity not updated.";
         }
         return "Product quantity updated.";
     }
@@ -205,16 +209,15 @@ class SalesController extends Controller
     {
         $orderitem = OrderItem::find($request->id);
         $orderitem->delete();
-
-        ProductBatch::where(["batch_name"=>$request->batch])->increment('available_quantity',$request->qty);
-
+        $batchData = ProductBatch::where(["id"=>$request->batch_id])->first();
+        ProductBatch::where(["id"=>$request->batch_id])->update(['available_quantity'=> $batchData->available_quantity + $request->qty, "used_quantity"=> $batchData->used_quantity - $request->qty]);
         return "Product Removed From Cart.";
     }
 
     public function salesrecipt(Request $request,$order_id)
     {
         $orderitems = OrderItem::where(['order_id'=>$order_id])->get();
-        $customer = Customer::where(['order__id'=>$order_id])->first();
+        $customer = Customer::where(['order__id'=>$order_id,"sale_type"=>"purchase"])->first();
         return view('purchaserecipt',compact('orderitems','customer'));
     }
 }

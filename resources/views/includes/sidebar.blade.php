@@ -66,6 +66,7 @@
 						<li><a class="{{ Request::routeIs('reports') ? 'active' : '' }}" href="{{route('reports')}}">Sale Reports</a></li>
                         <li><a class="{{ Request::routeIs('ipdreport') ? 'active' : '' }}" href="{{route('ipdreport')}}"><i class="fab fa-firstdraft"></i>  <span>IPD Report</span></a></li>
                         <li><a class="{{ Request::routeIs('returnreport') ? 'active' : '' }}" href="{{route('returnreport')}}"><i class="fa fa-undo"></i>   <span>Return Report</span></a></li>
+                        {{-- <li><a class="{{ Request::routeIs('returnreport') ? 'active' : '' }}" href="{{route('returnreport')}}"><i class="fa fa-undo"></i>   <span>Monthly Sales Report</span></a></li> --}}
 					</ul>
                     <ul style="display: none;">
 
@@ -87,12 +88,21 @@
 				</li>
 				@endcan -->
 
-				<!-- @can('view-users')
+				@can('view-users')
 				<li class="{{ Request::routeIs('users') ? 'active' : '' }}">
 					<a href="{{route('users')}}"><i class="fe fe-users"></i> <span>Users</span></a>
 				</li>
-				@endcan -->
+				@endcan
 
+                {{-- <li class="{{ Request::routeIs('productbatch') ? 'active' : '' }}">
+					<a href="{{route('productbatch')}}"><i class="fas fa-bell"></i> <span>Notification</span></a>
+				</li>
+                <li class="{{ Request::routeIs('productbatch') ? 'active' : '' }}">
+					<a href="{{route('productbatch')}}"><i class="fa fa-exclamation-triangle"></i> <span>Alert</span></a>
+				</li>
+                <li class="{{ Request::routeIs('productbatch') ? 'active' : '' }}">
+					<a href="{{route('productbatch')}}"><i class="fas fa-rupee-sign"></i><span>Monthly Sales</span></a>
+				</li> --}}
 				<li class="{{ Request::routeIs('profile') ? 'active' : '' }}">
 					<a href="{{route('profile')}}"><i class="fe fe-user-plus"></i> <span>Profile</span></a>
 				</li>

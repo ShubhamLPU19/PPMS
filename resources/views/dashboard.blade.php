@@ -16,6 +16,7 @@
 
 	<div class="row">
         <div class="col-xl-3 col-sm-6 col-12">
+            <a href="{{route('reports')}}" style="text-decoration: none; color: black;">
 			<div class="card">
 				<div class="card-body">
 					<div class="dash-widget-header">
@@ -34,8 +35,10 @@
 					</div>
 				</div>
 			</div>
+            </a>
 		</div>
         <div class="col-xl-3 col-sm-6 col-12">
+            <a href="{{route('returnreport')}}" style="text-decoration: none; color: black;">
 			<div class="card">
 				<div class="card-body">
 					<div class="dash-widget-header">
@@ -54,8 +57,10 @@
 					</div>
 				</div>
 			</div>
+            </a>
 		</div>
         <div class="col-xl-3 col-sm-6 col-12">
+            <a href="{{route('getExpirySoon')}}" style="text-decoration: none; color: black;">
 			<div class="card">
 				<div class="card-body">
 					<div class="dash-widget-header">
@@ -75,8 +80,9 @@
 					</div>
 				</div>
 			</div>
+            </a>
 		</div>
-        <div class="col-xl-3 col-sm-6 col-12">
+        {{-- <div class="col-xl-3 col-sm-6 col-12">
 			<div class="card">
 				<div class="card-body">
 					<div class="dash-widget-header">
@@ -96,8 +102,9 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --}}
         <div class="col-xl-3 col-sm-6 col-12">
+         <a href="{{route('getOutOfStock')}}" style="text-decoration: none; color: black;">
 			<div class="card">
 				<div class="card-body">
 					<div class="dash-widget-header">
@@ -117,8 +124,9 @@
 					</div>
 				</div>
 			</div>
+            </a>
 		</div>
-        <div class="col-xl-3 col-sm-6 col-12">
+        {{-- <div class="col-xl-3 col-sm-6 col-12">
 			<div class="card">
 				<div class="card-body">
 					<div class="dash-widget-header">
@@ -138,8 +146,9 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --}}
 		<div class="col-xl-3 col-sm-6 col-12">
+            <a href="{{route('categories')}}" style="text-decoration: none; color: black;">
 			<div class="card">
 				<div class="card-body">
 					<div class="dash-widget-header">
@@ -159,6 +168,7 @@
 					</div>
 				</div>
 			</div>
+            </a>
 		</div>
         <div class="col-xl-3 col-sm-6 col-12">
 			<div class="card">

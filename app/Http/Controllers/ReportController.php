@@ -12,10 +12,19 @@ use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    public function index(){
-        $reports = Customer::whereDate('created_at', Carbon::today())->orderBy("id","desc")->get();
+    public function index(Request $request){
+
+        $from_date = date('Y-m-d',strtotime($request->from_date)).' '.'00:00:00';
+        $to_date = date('Y-m-d',strtotime($request->to_date)).' '.'23:59:00';
+        if(!empty($request->from_date) && !empty($request->to_date))
+        {
+            $reports = Customer::where(["sale_type"=>"purchase"])->whereDate("created_at",">=",$from_date)->whereDate("created_at","<=",$to_date)->orderBy("id","desc")->get();
+        }else{
+            $reports = Customer::where(["sale_type"=>"purchase"])->whereDate('created_at', Carbon::today())->orderBy("id","desc")->get();
+        }
         return view("purchase_report",compact('reports'));
     }
+
 
     public function getData(Request $request){
         $this->validate($request,[

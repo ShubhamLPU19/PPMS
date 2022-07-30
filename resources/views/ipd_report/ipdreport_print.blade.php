@@ -79,7 +79,7 @@ function getIndianCurrency(float $number)
 
 ?>
 <a href="{{route('addorder')}}" id="backButton" class="btn btn-success text-center backBtn">Back</a></br>
-    <div style="max-width: 800px; width: 100%; margin: 0 auto;">
+    <div style="max-width: 700px; width: 100%; margin: 0 auto;">
       <table style="border-collapse: collapse;width: 100%;">
         <tr>
           <td colspan="2" align="center" style="font-size: 30px;">
@@ -148,7 +148,7 @@ function getIndianCurrency(float $number)
           </td>
           <td>{{$value->amount}}</td>
           <td>{{$value->paid_amount}}</td>
-          <td>{{$value->sale_type}}</td>
+          <td>{{ucwords($value->sale_type)}}</td>
         </tr>
         @endforeach
         <?php $count=1; ?>
@@ -161,7 +161,7 @@ function getIndianCurrency(float $number)
           </td>
           <td>{{$return->amount}}</td>
           <td>{{$return->paid_amount}}</td>
-          <td>{{$return->sale_type}}</td>
+          <td>{{ucwords($return->sale_type)}}</td>
         </tr>
         @endforeach
         <tr>

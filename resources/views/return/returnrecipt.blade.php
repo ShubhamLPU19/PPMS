@@ -79,7 +79,7 @@ function getIndianCurrency(float $number)
 
 ?>
 <a href="{{route('return')}}" id="backButton" class="btn btn-success text-center backBtn">Back</a></br>
-    <div style="max-width: 800px; width: 100%; margin: 0 auto;">
+    <div style="max-width: 700px; width: 100%; margin: 0 auto;">
       <table style="border-collapse: collapse;width: 100%;">
         <tr>
           <td colspan="2" align="center" style="font-size: 30px;">
@@ -116,7 +116,7 @@ function getIndianCurrency(float $number)
               @endif
               <tr>
                 <td><strong>Bill Date:</strong></td>
-                <td>: <strong>{{date('d-m-Y',strtotime($customer->created_at))}}</strong></td>
+                <td>: <strong>{{date('d-m-Y h:i A',strtotime($customer->created_at))}}</strong></td>
               </tr>
             </table>
           </td>
@@ -146,6 +146,7 @@ function getIndianCurrency(float $number)
           <td style="border-bottom: 1px solid;"><strong>Medicine Name</strong></td>
           <td style="border-bottom: 1px solid;"><strong>Price</strong></td>
           <td style="border-bottom: 1px solid;"><strong>Quantity</strong></td>
+          <td style="border-bottom: 1px solid;"><strong>Amount</strong></td>
         </tr>
         <?php $count=1; $totalamt = 0.0; ?>
         @foreach($orderitems as $orderitem)
@@ -159,17 +160,14 @@ function getIndianCurrency(float $number)
           <td>{{$orderitem->medicine_name}}</td>
           <td>{{round($orderitem->price)}}</td>
           <td>{{$orderitem->quantity}}</td>
+          <td>{{$orderitem->total_amount}}</td>
         </tr>
         @endforeach
         <tr>
-          <td colspan="3" rowspan="4" style="border-top:1px solid; text-align: left;">
-            <!-- <div><strong style="border-bottom: 1px solid;">Receipt Details :</strong></div>
-           <div style="padding-top: 10px;">Dr. xyz kumar yadav</div>
-           <div style="max-width: 80%; padding-top: 10px;">dslajf ldsajf; jasl;f jlksa jfdjdsaf lkjdsa f;lkdsajf ;jdsaf ;lks jfda;sjaf;l dsaf</div> -->
+          <td colspan="4" rowspan="4" style="border-top:1px solid; text-align: left;">
           </td>
-
           <td style="border-top:1px solid;">Total Amount :</td>
-          <td style="border-top:1px solid;">{{getIndianCurrency($totalamt)}}</td>
+          <td style="border-top:1px solid;">{{round($totalamt)}}</td>
         </tr>
         <?php $discountamt = 0;?>
         @if($customer->discount_amount > 0)
@@ -181,7 +179,7 @@ function getIndianCurrency(float $number)
         <?php $returnamt = 0; $returnamt = $customer->paid_amount - $customer->amount; ?>
         <tr>
           <td>Total Amount : </td>
-          <td>{{getIndianCurrency($totalamt - $customer->discount_amount)}}</td>
+          <td>{{$totalamt - $customer->discount_amount}}</td>
         </tr>
         @endif
         <tr>
@@ -191,6 +189,10 @@ function getIndianCurrency(float $number)
         <tr>
           <td>Change Amount :</td>
           <td>{{round($customer->paid_amount - $customer->amount)}}</td>
+        </tr>
+        <tr>
+          <td>In Words :</td>
+          <td>{{getIndianCurrency(round($totalamt))}}</td>
         </tr>
       </table>
 

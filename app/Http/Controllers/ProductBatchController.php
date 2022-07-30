@@ -14,7 +14,7 @@ class ProductBatchController extends Controller
             ->select('product_masters.medicine_name','product_batch.*')
             ->leftjoin('product_batch', 'product_masters.id', '=', 'product_batch.product_id')
             ->whereNotNull('product_batch.batch_name')
-            ->orderBy('product_batch.batch_name','asc')
+            ->orderBy('product_masters.medicine_name','asc')
             ->get();
         return view('productbatch.index',compact('title','productbatch'));
     }
@@ -35,7 +35,8 @@ class ProductBatchController extends Controller
     {
         ProductBatch::where(["id"=>$request->batchId])->update([
         "batch_name"=>$request->batch_name,
-        "available_quantity" => $request->quantity,
+        "available_quantity" => $request->quantity + $request->newquantity,
+        "total_quantity" => $request->total_quantity + $request->newquantity,
         "expiry_date"=> $request->expire_date,
         "gst" => $request->gst_type,
         "price" => $request->price,

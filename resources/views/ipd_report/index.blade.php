@@ -38,7 +38,7 @@
       <td>{{$report->name}}</td>
       <td>{{$report->doctor_name}}</td>
       <td>{{$report->ipd_id}}</td>
-      <td>{{$report->sale_type}}</td>
+      <td>{{ucwords($report->sale_type)}}</td>
       <td>{{$report->amount}}</td>
       <td><a href="{{route('viewipd',[$report->ipd_id])}}">View</a></td>
     </tr>

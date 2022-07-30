@@ -50,6 +50,8 @@ Route::group(['middleware'=>['guest']],function (){
 
 Route::group(['middleware'=>['auth']],function (){
     Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
+    Route::get('expiry-soon',[DashboardController::class,'getExpirySoon'])->name('getExpirySoon');
+    Route::get('out-of-stock',[DashboardController::class,'getOutOfStock'])->name('getOutOfStock');
     Route::get('logout',[LogoutController::class,'index'])->name('logout');
 
     Route::get('categories',[CategoryController::class,'index'])->name('categories');
@@ -95,8 +97,8 @@ Route::group(['middleware'=>['auth']],function (){
     Route::post('sales',[SalesController::class,'store'])->name('addorder');
     Route::get('checkout',[SalesController::class,'checkout'])->name('checkout');
     Route::post('checkoutadd',[SalesController::class,'checkoutadd'])->name('checkoutadd');
-    Route::put('itemupdate/{id}',[SalesController::class,'update'])->name('updateqty');
-    Route::delete('itemdelete/{id}',[SalesController::class,'destroy'])->name('deleteitem');
+    Route::put('itemupdatesale/{id}',[SalesController::class,'update'])->name('updateqty');
+    Route::delete('saleitemdelete/{id}',[SalesController::class,'destroy'])->name('deleteitem');
     Route::get('salesrecipt/{id}',[SalesController::class,'salesrecipt'])->name('salesrecipt');
     Route::post('draft',[SalesController::class,'draft'])->name('draft');
 
@@ -108,7 +110,7 @@ Route::group(['middleware'=>['auth']],function (){
     Route::post('return',[ReturnController::class,'store'])->name('addorderreturn');
     Route::get('returncheckout',[ReturnController::class,'checkout'])->name('returncheckout');
     Route::post('checkoutaddreturn',[ReturnController::class,'checkoutaddreturn'])->name('checkoutaddreturn');
-    Route::put('itemupdate/{id}',[ReturnController::class,'update'])->name('updateqtyreturn');
+    Route::put('itemupdatereturn/{id}',[ReturnController::class,'update'])->name('updateqtyreturn');
     Route::delete('itemdelete/{id}',[ReturnController::class,'destroy'])->name('deleteitemreturn');
     Route::get('autocompletereturn', [ReturnController::class, 'autocomplete'])->name('autocompletereturn');
     Route::get('returnreport',[ReturnController::class,'returnreport'])->name('returnreport');
@@ -148,6 +150,7 @@ Route::group(['middleware'=>['auth']],function (){
 
     Route::get('reports',[ReportController::class,'index'])->name('reports');
     Route::post('reports',[ReportController::class,'getData']);
+    Route::get('get-monthly-sale-report',[ReportController::class,'monthlySales'])->name('monthlySales');
 
     Route::get('backup',[BackupController::class,'index'])->name('backup-app');
     Route::get('backup-app',[BackupController::class,'database'])->name('backup-db');

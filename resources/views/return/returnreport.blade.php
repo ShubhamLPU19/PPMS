@@ -34,8 +34,9 @@
     </tr>
   </thead>
   <tbody>
-      <?php $count=1;?>
+      <?php $count=1; $total_amount = 0;?>
       @foreach($returnreports as $report)
+      <?php $total_amount += $report->amount; ?>
     <tr>
       <th scope="row">{{$count++}}</th>
       <td>{{$report->name}}</td>
@@ -48,6 +49,15 @@
       <td><a href="{{route('returnrecipt',[$report->order__id])}}">Print Receipt</a></td>
     </tr>
     @endforeach
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><strong>Total :-</strong></td>
+        <td><strong>{{$total_amount}}</strong></td>
+    </tr>
   </tbody>
 </table>
 

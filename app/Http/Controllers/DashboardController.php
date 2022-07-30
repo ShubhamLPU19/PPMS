@@ -40,10 +40,10 @@ class DashboardController extends Controller
                 ->options([]);
 
 
-        $expireTreshold = Carbon::now()->addDays(60);
+        $expireTreshold = Carbon::now()->addDays(90);
         $total_expired_products = ProductBatch::where('expiry_date', '<=', $expireTreshold)->count();
-        $outofStockSoon = ProductBatch::where('available_quantity','<=',10)->count();
-        $outofStock = ProductBatch::where('available_quantity','<=',0)->count();
+        $outofStockSoon = ProductBatch::where('available_quantity','<=',10)->groupBy("product_id")->count();
+        $outofStock = ProductBatch::where('available_quantity','=',0)->count();
         $sales = Customer::where(['sale_type'=>'purchase'])->whereDate('created_at','=',Carbon::now())->sum('amount');
         $return = Customer::where(['sale_type'=>'return'])->whereDate('created_at','=',Carbon::now())->sum('amount');
         $latest_sales = Sales::whereDate('created_at','=',Carbon::now())->get();
@@ -53,5 +53,33 @@ class DashboardController extends Controller
             'title','pieChart','total_expired_products',
             'latest_sales','today_sales','total_categories','outofStock','outofStockSoon','sales','return','draft'
         ));
+    }
+
+    public function getExpirySoon(Request $request)
+    {
+        $title = "product Batch";
+        $expireTreshold = Carbon::now()->addDays(90);
+        $productbatch = \DB::table('product_masters')
+            ->select('product_masters.medicine_name','product_batch.*')
+            ->leftjoin('product_batch', 'product_masters.id', '=', 'product_batch.product_id')
+            ->whereNotNull('product_batch.batch_name')
+            ->where('product_batch.expiry_date', '<=', $expireTreshold)
+            ->orderBy('product_masters.medicine_name','asc')
+            ->get();
+        return view('detail',compact('title','productbatch'));
+    }
+
+    public function getOutOfStock(Request $request)
+    {
+        $title = "product Batch";
+        $productbatch = \DB::table('product_masters')
+            ->select('product_masters.medicine_name','product_batch.*')
+            ->leftjoin('product_batch', 'product_masters.id', '=', 'product_batch.product_id')
+            ->whereNotNull('product_batch.batch_name')
+            ->where('product_batch.available_quantity','=',0)
+            ->orderBy('product_masters.medicine_name','asc')
+            ->groupBy("product_batch.product_id")
+            ->get();
+        return view('detail',compact('title','productbatch'));
     }
 }

@@ -79,7 +79,7 @@ function getIndianCurrency(float $number)
 
 ?>
 <a href="{{route('addorder')}}" id="backButton" class="btn btn-success text-center backBtn">Back</a></br>
-    <div style="max-width: 800px; width: 100%; margin: 0 auto;">
+    <div style="max-width: 700px; width: 100%; margin: 0 auto;">
       <table style="border-collapse: collapse;width: 100%;">
         <tr>
           <td colspan="2" align="center" style="font-size: 30px;">
@@ -116,7 +116,7 @@ function getIndianCurrency(float $number)
               @endif
               <tr>
                 <td><strong>Bill Date:</strong></td>
-                <td>: <strong>{{date('d-m-Y',strtotime($customer->created_at))}}</strong></td>
+                <td>: <strong>{{date('d-m-Y h:i A',strtotime($customer->created_at))}}</strong></td>
               </tr>
             </table>
           </td>
@@ -146,6 +146,7 @@ function getIndianCurrency(float $number)
           <td style="border-bottom: 1px solid;"><strong>Medicine Name</strong></td>
           <td style="border-bottom: 1px solid;"><strong>Price</strong></td>
           <td style="border-bottom: 1px solid;"><strong>Quantity</strong></td>
+          <td style="border-bottom: 1px solid;"><strong>Amount</strong></td>
         </tr>
         <?php $count=1; $totalamt = 0.0; ?>
         @foreach($orderitems as $orderitem)
@@ -154,20 +155,16 @@ function getIndianCurrency(float $number)
           <td>{{$count++}}</td>
           <td style="text-align: leftt;">
             {{$orderitem->medicine_category}}
-            <!-- <div>Bed Room Charges/ General Room</div> -->
           </td>
           <td>{{$orderitem->medicine_name}}</td>
           <td>{{round($orderitem->price)}}</td>
           <td>{{$orderitem->quantity}}</td>
+          <td>{{$orderitem->total_amount}}</td>
         </tr>
         @endforeach
         <tr>
-          <td colspan="3" rowspan="4" style="border-top:1px solid; text-align: left;">
-            <!-- <div><strong style="border-bottom: 1px solid;">Receipt Details :</strong></div>
-           <div style="padding-top: 10px;">Dr. xyz kumar yadav</div>getIndianCurrency
-           <div style="max-width: 80%; padding-top: 10px;">dslajf ldsajf; jasl;f jlksa jfdjdsaf lkjdsa f;lkdsajf ;jdsaf ;lks jfda;sjaf;l dsaf</div> -->
+          <td colspan="4" rowspan="4" style="border-top:1px solid; text-align: left;">
           </td>
-
           <td style="border-top:1px solid;">Total Amount :</td>
           <td style="border-top:1px solid;">{{round($totalamt)}}</td>
         </tr>
@@ -200,13 +197,12 @@ function getIndianCurrency(float $number)
 
       <table style="width: 100%;">
         <tr>
-          <td style="height: 60px;"></td>
+          <td style="height: 30px;"></td>
         </tr>
         <tr>
-
-          <!-- <td style="text-align: right;">
-            (Authorized Signatory)
-          </td> -->
+          <td style="text-align: right;">
+            Note: Medicine once sold will not be returned or exchanged.
+          </td>
         </tr>
       </table>
 	  <div>

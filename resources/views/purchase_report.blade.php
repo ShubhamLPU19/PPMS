@@ -12,13 +12,33 @@
 		<li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
 		<li class="breadcrumb-item active">Sales Report</li>
 	</ul>
+    <a href="{{route('addorder')}}" class="btn btn-success text-center" style="float: right; margin-top: -58px;">Back</a>
 </div>
 @endpush
 
 
 @section('content')
-<a href="{{route('addorder')}}" class="btn btn-success text-center">Back</a></br>
-
+<div class="container">
+    <form action="{{route('reports')}}" method="get">
+    @csrf
+        <div class="row">
+            <div class="col-5">
+            <label> From Date </label>
+            <input type="date" class="form-control" name="from_date" value="{{ Request::get('from_date') }}">
+            </div>
+            <div class="col-5">
+            <label> From Date </label>
+            <input type="date" class="form-control" name="to_date" value="{{ Request::get('to_date') }}">
+            </div>
+            <div class="col-2">
+            <label>  </label>
+            <button type="submit" class="btn btn-primary mb-2" style="margin-top: 30px;">Filter</button>
+            </div>
+        </div>
+    </form>
+</div>
+<br>
+<br>
 <table class="table table-hover">
   <thead>
     <tr>
@@ -34,8 +54,9 @@
     </tr>
   </thead>
   <tbody>
-      <?php $count=1;?>
+      <?php $count=1; $total_amount = 0;?>
       @foreach($reports as $report)
+      <?php $total_amount += $report->amount; ?>
     <tr>
       <th scope="row">{{$count++}}</th>
       <td>{{$report->name}}</td>
@@ -48,6 +69,15 @@
       <td><a href="{{route('salesrecipt',[$report->order__id])}}">Print Receipt</a></td>
     </tr>
     @endforeach
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><strong>Total :-</strong></td>
+        <td><strong>{{$total_amount}}</strong></td>
+    </tr>
   </tbody>
 </table>
 

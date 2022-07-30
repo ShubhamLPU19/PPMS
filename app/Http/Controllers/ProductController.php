@@ -137,6 +137,7 @@ class ProductController extends Controller
         $batch->expiry_date = $request->expire_date;
         $batch->location = $request->location;
         $batch->available_quantity = $request->quantity;
+        $batch->total_quantity = $request->quantity;
         $batch->gst_percent = $request->gst_percent;
         $batch->gst = $request->gst_type;
         $batch->save();

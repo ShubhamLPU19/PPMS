@@ -38,7 +38,7 @@
       <td>{{$report->name}}</td>
       <td>{{$report->doctor_name}}</td>
       <td>{{$report->ipd_id}}</td>
-      <td>{{$report->sale_type}}</td>
+      <td>{{ucwords($report->sale_type)}}</td>
       <td>{{$report->amount}}</td>
       <?php $purchase_amt+= $report->amount; ?>
     </tr>
@@ -72,7 +72,7 @@
       <td>{{$report->name}}</td>
       <td>{{$report->doctor_name}}</td>
       <td>{{$report->ipd_id}}</td>
-      <td>{{$report->sale_type}}</td>
+      <td>{{ucwords($report->sale_type)}}</td>
       <td>{{$report->amount}}</td>
       <?php $return_amt+= $report->amount; ?>
     </tr>
